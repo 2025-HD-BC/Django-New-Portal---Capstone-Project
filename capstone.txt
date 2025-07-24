@@ -1,0 +1,14 @@
+Django News Portal - Capstone Project
+=====================================
+
+GitHub Repository Link:
+https://github.com/2025-HD-BC/Django-New-Portal---Capstone-Project
+
+Project Summary:
+- Django News Portal with role-based access control
+- Complete documentation with Sphinx
+- Docker containerization
+- Comprehensive README with setup instructions
+- Git version control with proper branching strategy
+
+All capstone requirements have been successfully completed.
