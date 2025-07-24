@@ -31,7 +31,7 @@ A comprehensive news management system built with Django, featuring role-based a
 
 1. **Clone the repository**
    ```bash
-   git clone <YOUR_REPO_URL>
+   git clone https://github.com/2025-HD-BC/Django-New-Portal---Capstone-Project.git
    cd Django_News_Portal
    ```
 
@@ -89,7 +89,7 @@ A comprehensive news management system built with Django, featuring role-based a
 
 1. **Clone the repository**
    ```bash
-   git clone <YOUR_REPO_URL>
+   git clone https://github.com/2025-HD-BC/Django-New-Portal---Capstone-Project.git
    cd Django_News_Portal
    ```
 
