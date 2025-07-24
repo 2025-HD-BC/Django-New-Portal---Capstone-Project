@@ -1,0 +1,24 @@
+{% extends "news/base.html" %}
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 75vh;">
+    <div class="card shadow-lg border-0" style="max-width: 440px; width: 100%; border-radius: 1.5rem;">
+        <div class="card-body text-center p-5">
+            <img src="https://img.icons8.com/ios-filled/100/exit.png" alt="Logged Out Icon"
+                 style="width:64px; margin-bottom:18px; opacity:0.8;">
+            <h1 class="mb-3" style="font-size:2.6rem; font-weight:700; letter-spacing:1px;">
+                You’ve logged out
+            </h1>
+            <p class="lead mb-2 text-muted">
+                Thanks for spending some quality time with the News Portal.<br>
+                We hope to see you back soon!
+            </p>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-4 px-5 rounded-pill shadow-sm"
+               style="font-size:1.0rem; font-weight:500;">
+                Log in again
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

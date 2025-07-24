@@ -1,0 +1,28 @@
+{% extends "news/base.html" %}
+{% block title %}Publishers{% endblock %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4 fw-bold">All Publisher Organizations</h2>
+  <div class="row g-3">
+    {% for publisher in publishers %}
+      <div class="col-12 col-md-6">
+        <div class="card shadow-sm mb-3">
+          <div class="card-body">
+            <h5>
+              <a href="{% url 'publisher_detail' publisher.pk %}" class="fw-bold">{{ publisher.name }}</a>
+            </h5>
+            <div class="mb-1">
+              <span class="badge bg-primary">{{ publisher.articles.count }} articles</span>
+              <span class="badge bg-secondary">{{ publisher.editors.count }} editors</span>
+              <span class="badge bg-info">{{ publisher.journalists.count }} journalists</span>
+            </div>
+            <div class="small text-muted">Editors: {{ publisher.editors.all|join:", " }}</div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="alert alert-warning">No publishers found.</div></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

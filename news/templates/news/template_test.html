@@ -1,0 +1,69 @@
+<!-- Test file to verify templates are loading correctly -->
+{% extends "news/base.html" %}
+{% block title %}Template Test{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-success">
+        <h3>✅ Custom Templates Working!</h3>
+        <p>If you can see this page, it means your custom password reset templates should also be working correctly.</p>
+        <p>Password reset forms will use the custom templates in <code>news/templates/registration/</code></p>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4>Authentication Flow Test</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Password Reset Flow:</h5>
+                    <ol>
+                        <li><a href="{% url 'password_reset' %}" class="btn btn-warning btn-sm">1. Start Password Reset</a></li>
+                        <li>Check email for reset link</li>
+                        <li>Follow link to set new password</li>
+                        <li>Confirmation page</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <h5>Password Change (Logged In):</h5>
+                    <ol>
+                        <li><a href="{% url 'password_change' %}" class="btn btn-info btn-sm">1. Change Password</a></li>
+                        <li>Enter current & new passwords</li>
+                        <li>Confirmation page</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="alert alert-info">
+                <h6><i class="bi bi-info-circle me-2"></i>URL Configuration Status:</h6>
+                <ul class="mb-0">
+                    <li><strong>Login:</strong> Custom RoleBasedLoginView</li>
+                    <li><strong>Logout:</strong> Custom MyLogoutView</li>
+                    <li><strong>Password Reset:</strong> Django built-in with custom templates</li>
+                    <li><strong>Password Change:</strong> Django built-in with custom templates</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mt-3">
+        <div class="card-header">
+            <h5>Template Loading Verification</h5>
+        </div>
+        <div class="card-body">
+            <p>Templates should load from <code>news/templates/registration/</code> in this order:</p>
+            <ul>
+                <li>✅ <code>password_reset_form.html</code> - Initial reset form</li>
+                <li>✅ <code>password_reset_done.html</code> - Email sent confirmation</li>
+                <li>✅ <code>password_reset_confirm.html</code> - Set new password form</li>
+                <li>✅ <code>password_reset_complete.html</code> - Success page</li>
+                <li>✅ <code>password_change_form.html</code> - Change password form</li>
+                <li>✅ <code>password_change_done.html</code> - Change success page</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

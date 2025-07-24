@@ -1,0 +1,38 @@
+{% extends "news/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 col-lg-6 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h1 class="mb-3">Profile</h1>
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="Profile image" class="rounded-circle mb-3 shadow-sm" style="width: 96px; height: 96px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://img.icons8.com/ios-filled/96/user-male-circle.png" alt="Profile image" class="rounded-circle mb-3 shadow-sm" style="width: 96px; height: 96px; object-fit: cover;">
+                    {% endif %}
+
+                    <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+                    <p class="mb-1"><strong>Email:</strong> {{ user.email|default:"—" }}</p>
+                    <p class="mb-1"><strong>Role:</strong> {{ user.role|title }}</p>
+                    
+                    {% if user.contact_number %}
+                        <p class="mb-1"><strong>Contact Number:</strong> {{ user.contact_number }}</p>
+                    {% endif %}
+                    {% if user.bio %}
+                        <div class="mb-2">
+                            <strong>Bio:</strong>
+                            <p class="text-muted small mb-0" style="white-space: pre-line;">{{ user.bio }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="d-flex flex-column flex-md-row justify-content-center gap-2 mt-3">
+                        <a href="{% url 'profile_edit' %}" class="btn btn-outline-secondary">Edit Profile</a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

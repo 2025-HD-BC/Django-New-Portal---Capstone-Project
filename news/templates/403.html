@@ -1,0 +1,155 @@
+{% extends "news/base.html" %}
+{% block title %}Access Forbidden - News Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-danger text-white text-center">
+          <h1 class="display-1 mb-0">
+            <i class="bi bi-shield-exclamation"></i>
+          </h1>
+          <h2 class="mb-0">403 - Access Forbidden</h2>
+        </div>
+        <div class="card-body p-4 text-center">
+          
+          <!-- Error illustration -->
+          <div class="mb-4">
+            <i class="bi bi-person-x display-1 text-muted"></i>
+            <div class="mt-2">
+              <i class="bi bi-lock-fill display-4 text-danger"></i>
+            </div>
+          </div>
+
+          <!-- Main message -->
+          <div class="mb-4">
+            <h3 class="fw-bold mb-3">You don't have permission to access this page</h3>
+            <p class="text-muted mb-0">
+              This page is restricted and requires special permissions to view. 
+              You might not have the right role or you may need to log in with a different account.
+            </p>
+          </div>
+
+          <!-- Access info -->
+          <div class="alert alert-light mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-info-circle text-danger me-2"></i>
+              Why am I seeing this?
+            </h5>
+            <ul class="list-unstyled mb-0 small text-start">
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                You might not be logged in
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                Your account role doesn't have access to this feature
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                This page is restricted to specific user types (Editor, Journalist, etc.)
+              </li>
+              <li class="mb-0">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                You may have accessed an expired or invalid link
+              </li>
+            </ul>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="d-grid gap-2 d-md-block mb-3">
+            {% if not user.is_authenticated %}
+              <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-md-2">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                Login to Continue
+              </a>
+            {% else %}
+              <a href="{% url 'dashboard' %}" class="btn btn-info btn-lg me-md-2">
+                <i class="bi bi-speedometer2 me-2"></i>
+                Go to Dashboard
+              </a>
+            {% endif %}
+            <a href="{% url 'home' %}" class="btn btn-outline-primary btn-lg">
+              <i class="bi bi-house-door me-2"></i>
+              Go to Homepage
+            </a>
+          </div>
+
+          <!-- User info -->
+          {% if user.is_authenticated %}
+          <div class="small text-muted">
+            <p class="mb-1">
+              <i class="bi bi-person-badge me-1"></i>
+              Currently logged in as: <strong>{{ user.username }}</strong> ({{ user.role|capfirst }})
+            </p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Role information -->
+      <div class="card mt-4">
+        <div class="card-header">
+          <h6 class="mb-0">
+            <i class="bi bi-people-fill me-2"></i>
+            User Role Information
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="row text-center small">
+            <div class="col-6 col-md-3 mb-2">
+              <div class="badge bg-light text-dark p-2 w-100">
+                <i class="bi bi-book d-block mb-1"></i>
+                <strong>Reader</strong><br>
+                <small>View articles & newsletters</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <div class="badge bg-success p-2 w-100">
+                <i class="bi bi-pen d-block mb-1"></i>
+                <strong>Journalist</strong><br>
+                <small>Create & edit content</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <div class="badge bg-warning text-dark p-2 w-100">
+                <i class="bi bi-check2-square d-block mb-1"></i>
+                <strong>Editor</strong><br>
+                <small>Review & approve content</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3 mb-2">
+              <div class="badge bg-primary p-2 w-100">
+                <i class="bi bi-building d-block mb-1"></i>
+                <strong>Publisher</strong><br>
+                <small>Manage organizations</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border-radius: 15px;
+}
+
+.btn {
+  border-radius: 25px;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.bi-shield-exclamation {
+  animation: shake 2s infinite;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "news/base.html" %}
+{% block title %}My Subscriptions{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="mb-4"><i class="bi bi-person-check-fill"></i> My Subscriptions</h2>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Publisher Subscriptions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-building"></i> Publisher Subscriptions ({{ user.subscriptions_publishers.count }})</h4>
+                </div>
+                <div class="card-body">
+                    {% if user.subscriptions_publishers.exists %}
+                        <div class="row">
+                            {% for publisher in user.subscriptions_publishers.all %}
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ publisher.name }}</h5>
+                                            <p class="card-text">
+                                                <small class="text-muted">
+                                                    <i class="bi bi-people"></i> {{ publisher.editors.count }} editor(s)<br>
+                                                    <i class="bi bi-pencil"></i> {{ publisher.journalists.count }} journalist(s)
+                                                </small>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <a href="{% url 'publisher_detail' publisher.pk %}" class="btn btn-outline-primary btn-sm">View</a>
+                                                <form method="post" action="{% url 'unsubscribe_publisher' publisher.id %}" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Unsubscribe from {{ publisher.name }}?')">
+                                                        <i class="bi bi-x-circle"></i> Unsubscribe
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-building display-1"></i>
+                            <p class="mt-3">You haven't subscribed to any publishers yet.</p>
+                            <a href="{% url 'publishers_public_list' %}" class="btn btn-primary">Browse Publishers</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Journalist Subscriptions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-person-badge"></i> Journalist Subscriptions ({{ user.subscriptions_journalists.count }})</h4>
+                </div>
+                <div class="card-body">
+                    {% if user.subscriptions_journalists.exists %}
+                        <div class="row">
+                            {% for journalist in user.subscriptions_journalists.all %}
+                                <div class="col-md-6 col-lg-4 mb-3">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                {% if journalist.profile_pic %}
+                                                    <img src="{{ journalist.profile_pic.url }}" alt="{{ journalist.username }}" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                {% else %}
+                                                    <div class="bg-primary rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                        <i class="bi bi-person text-white"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <div>
+                                                    <h5 class="card-title mb-0">{{ journalist.get_full_name|default:journalist.username }}</h5>
+                                                    <small class="text-muted">@{{ journalist.username }}</small>
+                                                </div>
+                                            </div>
+                                            {% if journalist.bio %}
+                                                <p class="card-text small">{{ journalist.bio|truncatewords:15 }}</p>
+                                            {% endif %}
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">
+                                                    <i class="bi bi-file-text"></i> Articles: {{ journalist.articles.count }}
+                                                </small>
+                                                <form method="post" action="{% url 'unsubscribe_journalist' journalist.id %}" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Unsubscribe from {{ journalist.get_full_name|default:journalist.username }}?')">
+                                                        <i class="bi bi-x-circle"></i> Unsubscribe
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-person-badge display-1"></i>
+                            <p class="mt-3">You haven't subscribed to any journalists yet.</p>
+                            <a href="{% url 'dashboard' %}" class="btn btn-primary">Browse Journalists</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="bi bi-graph-up"></i> Subscription Stats</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="border-end">
+                                <h3 class="text-primary">{{ user.subscriptions_publishers.count }}</h3>
+                                <p class="mb-0">Publisher{{ user.subscriptions_publishers.count|pluralize }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="border-end">
+                                <h3 class="text-success">{{ user.subscriptions_journalists.count }}</h3>
+                                <p class="mb-0">Journalist{{ user.subscriptions_journalists.count|pluralize }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h3 class="text-info">{{ total_subscriptions }}</h3>
+                            <p class="mb-0">Total Subscription{{ total_subscriptions|pluralize }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">← Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "news/base.html" %}
+{% block title %}Error Testing - News Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h3 class="mb-0">
+            <i class="bi bi-bug me-2"></i>
+            Error Page Testing (Development Only)
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Development Tool:</strong> Use these links to test your custom error pages.
+            This page should not be accessible in production!
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-warning">
+                <div class="card-body text-center">
+                  <i class="bi bi-question-circle display-4 text-warning mb-3"></i>
+                  <h5>404 Error</h5>
+                  <p class="small text-muted">Page Not Found</p>
+                  <a href="/nonexistent-page/" class="btn btn-outline-warning">
+                    Test 404 Page
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card border-danger">
+                <div class="card-body text-center">
+                  <i class="bi bi-shield-exclamation display-4 text-danger mb-3"></i>
+                  <h5>403 Error</h5>
+                  <p class="small text-muted">Access Forbidden</p>
+                  <a href="{% url 'test_403' %}" class="btn btn-outline-danger">
+                    Test 403 Page
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card border-dark">
+                <div class="card-body text-center">
+                  <i class="bi bi-exclamation-octagon display-4 text-dark mb-3"></i>
+                  <h5>500 Error</h5>
+                  <p class="small text-muted">Server Error</p>
+                  <a href="{% url 'test_500' %}" class="btn btn-outline-dark">
+                    Test 500 Page
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <h6>How to Test:</h6>
+            <ul class="small">
+              <li><strong>404:</strong> Click the link above or visit any non-existent URL</li>
+              <li><strong>403:</strong> Click the link to trigger a permission denied error</li>
+              <li><strong>500:</strong> Click the link to trigger a server error</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

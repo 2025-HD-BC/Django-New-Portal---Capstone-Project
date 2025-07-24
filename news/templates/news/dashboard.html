@@ -1,0 +1,393 @@
+{% extends "news/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- Welcome & Actions -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-0">Welcome, {{ user.username|capfirst }}!</h2>
+            <div class="text-muted mt-1">
+                <span class="badge bg-light text-dark">
+                    {{ user.get_role_display|default:user.role|capfirst }}
+                </span>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+            {% if user.role == 'journalist' %}
+                <a class="btn btn-primary mb-2" href="{% url 'article_create' %}">
+                    <i class="bi bi-plus-lg me-1"></i> Create New Article
+                </a>
+                <a class="btn btn-success mb-2" href="{% url 'newsletter_create' %}">
+                    <i class="bi bi-envelope-plus me-1"></i> Create Newsletter
+                </a>
+            {% elif user.role in 'publisher editor' and not my_publishers %}
+                <a class="btn btn-success mb-2" href="{% url 'publisher_create' %}">
+                    <i class="bi bi-building-add me-1"></i> Create Publisher Organization
+                </a>
+            {% endif %}
+            {% if user.role in 'publisher editor' %}
+                <div class="mt-3">
+                    <a class="btn btn-info btn-lg" href="{% url 'publishers_public_list' %}">
+                        <i class="bi bi-building"></i> View All Publishers
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card border-primary shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h6 class="card-title text-uppercase text-muted">Total Articles</h6>
+                    <h2 class="fw-bold">{{ articles_count|default:"0" }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card border-secondary shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h6 class="card-title text-uppercase text-muted">Publishers</h6>
+                    <h2 class="fw-bold">{{ publishers_count|default:"0" }}</h2>
+                    {% if user.role in 'publisher editor' %}
+                        <a class="btn btn-outline-info btn-sm mt-2" href="{% url 'publishers_public_list' %}">
+                            View List
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if user.role == 'editor' %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card border-warning shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title text-uppercase text-muted">Pending Approvals</h6>
+                        <h2 class="fw-bold">{{ pending_articles|length }}</h2>
+                    </div>
+                </div>
+            </div>
+        {% elif user.role == 'journalist' %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card border-info shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title text-uppercase text-muted">Your Articles</h6>
+                        <h2 class="fw-bold">{{ my_articles|length }}</h2>
+                    </div>
+                </div>
+            </div>
+        {% elif user.role == 'reader' %}
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="card border-success shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <h6 class="card-title text-uppercase text-muted">Subscriptions</h6>
+                        <h2 class="fw-bold mb-0">{{ subscriptions_publishers|length|default:0 }}</h2>
+                        <span class="small text-muted">Publishers</span>
+                        <h2 class="fw-bold mb-0 mt-2">{{ subscriptions_journalists|length|default:0 }}</h2>
+                        <span class="small text-muted">Journalists</span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Reader Subscriptions Section -->
+    {% if user.role == "reader" %}
+    <div class="row mb-5">
+        <div class="col-12 col-md-6 mb-4 mb-md-0">
+            <h4 class="fw-bold">All Publishers</h4>
+            <ul class="list-group">
+                {% for publisher in all_publishers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ publisher.name }}</span>
+                        {% if publisher in subscriptions_publishers %}
+                            <form method="post" action="{% url 'unsubscribe_publisher' publisher.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'subscribe_publisher' publisher.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Subscribe</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No publishers available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-12 col-md-6">
+            <h4 class="fw-bold">All Journalists</h4>
+            <ul class="list-group">
+                {% for journalist in all_journalists %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ journalist.get_full_name|default:journalist.username }}</span>
+                        {% if journalist in subscriptions_journalists %}
+                            <form method="post" action="{% url 'unsubscribe_journalist' journalist.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{% url 'subscribe_journalist' journalist.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Subscribe</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">No journalists available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Main Content by Role -->
+    <div class="row">
+        {% if user.role == "editor" %}
+            <div class="col-12">
+                <h4 class="mb-3 fw-bold">Pending Articles for Review</h4>
+                <ul class="list-group mb-4">
+                    {% for article in pending_articles %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" alt="Article Image"
+                                         class="rounded me-3 border" style="width:56px;height:56px;object-fit:cover;">
+                                {% endif %}
+                                <div>
+                                    <a href="{% url 'article_detail' article.pk %}" class="fw-semibold text-decoration-none">{{ article.title }}</a>
+                                    <span class="text-muted small ms-2">
+                                        by {{ article.author }} &middot; {{ article.created_at|date:"Y-m-d H:i" }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <form method="post" action="{% url 'article_approve' article.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+                                </form>
+                                <a href="{% url 'article_reject' article.pk %}" class="btn btn-sm btn-outline-danger">Reject</a>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No pending articles.</li>
+                    {% endfor %}
+                </ul>
+                {% if rejected_articles %}
+                    <h5 class="mb-3 fw-bold text-danger">Recently Rejected Articles</h5>
+                    <ul class="list-group mb-4">
+                        {% for article in rejected_articles %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ article.title }}</strong>
+                                    <span class="badge bg-danger ms-2">Rejected</span>
+                                    <span class="text-muted small ms-2">by {{ article.author }}</span>
+                                    {% if article.rejection_reason %}
+                                        <div class="small text-muted mt-1"><em>Reason: {{ article.rejection_reason }}</em></div>
+                                    {% endif %}
+                                </div>
+                                <span class="text-muted small">{{ article.reviewed_at|date:"Y-m-d H:i" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+                <!-- Pending Newsletters Section -->
+                <h5 class="mb-3 fw-bold text-warning">📧 Pending Newsletters</h5>
+                <ul class="list-group mb-4">
+                    {% for newsletter in pending_newsletters %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <div>
+                                    <a href="{% url 'newsletter_detail' newsletter.pk %}" class="fw-semibold text-decoration-none">{{ newsletter.title }}</a>
+                                    <span class="text-muted small ms-2">
+                                        by {{ newsletter.journalist }} &middot; {{ newsletter.created_at|date:"Y-m-d H:i" }}
+                                    </span>
+                                    {% if newsletter.publisher %}
+                                        <div class="small text-muted">Publisher: {{ newsletter.publisher.name }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <form method="post" action="{% url 'newsletter_approve' newsletter.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+                                </form>
+                                <a href="{% url 'newsletter_reject' newsletter.pk %}" class="btn btn-sm btn-outline-danger">Reject</a>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No pending newsletters.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% elif user.role == "journalist" %}
+            <div class="col-12">
+                <h4 class="mb-3 fw-bold">Your Recent Articles</h4>
+                <ul class="list-group mb-4">
+                    {% for article in my_articles|slice:":5" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" alt="Article Image"
+                                         class="rounded me-3 border" style="width:56px;height:56px;object-fit:cover;">
+                                {% endif %}
+                                <div>
+                                    <a href="{% url 'article_detail' article.pk %}" class="fw-semibold text-decoration-none">{{ article.title }}</a>
+                                    {% if article.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark ms-2">Pending</span>
+                                    {% elif article.status == 'rejected' %}
+                                        <span class="badge bg-danger ms-2">Rejected</span>
+                                    {% endif %}
+                                    {% if article.rejection_reason %}
+                                        <div class="small text-muted mt-1"><em>Reason: {{ article.rejection_reason }}</em></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <span class="text-muted small">{{ article.created_at|date:"Y-m-d" }}</span>
+                            {% if article.status != 'approved' %}
+                                <a href="{% url 'article_delete' article.pk %}" class="btn btn-sm btn-outline-danger ms-2" title="Delete article">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No articles yet.</li>
+                    {% endfor %}
+                </ul>
+                
+                <!-- Newsletters Section for Journalists -->
+                <h4 class="mb-3 fw-bold">📧 Your Newsletters</h4>
+                <ul class="list-group mb-4">
+                    {% for newsletter in my_newsletters|slice:":5" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <div>
+                                    <a href="{% url 'newsletter_detail' newsletter.pk %}" class="fw-semibold text-decoration-none">{{ newsletter.title }}</a>
+                                    {% if not newsletter.approved %}
+                                        <span class="badge bg-warning text-dark ms-2">Pending</span>
+                                    {% else %}
+                                        <span class="badge bg-success ms-2">Published</span>
+                                    {% endif %}
+                                    {% if newsletter.publisher %}
+                                        <div class="small text-muted">Publisher: {{ newsletter.publisher.name }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <span class="text-muted small">{{ newsletter.created_at|date:"Y-m-d" }}</span>
+                            {% if not newsletter.approved %}
+                                <a href="{% url 'newsletter_edit' newsletter.pk %}" class="btn btn-sm btn-outline-primary ms-2" title="Edit newsletter">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No newsletters yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% elif user.role == "reader" %}
+            <div class="col-12">
+                <h4 class="mb-3 fw-bold">Recent Articles</h4>
+                <ul class="list-group mb-4">
+                    {% for article in articles %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                {% if article.image %}
+                                    <img src="{{ article.image.url }}" alt="Article Image"
+                                         class="rounded me-3 border" style="width:56px;height:56px;object-fit:cover;">
+                                {% endif %}
+                                <a href="{% url 'article_detail' article.pk %}" class="fw-semibold text-decoration-none">{{ article.title }}</a>
+                                <span class="text-muted ms-2">by {{ article.author }}</span>
+                            </div>
+                            <span class="text-muted small">{{ article.created_at|date:"Y-m-d" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No articles yet.</li>
+                    {% endfor %}
+                </ul>
+                
+                <!-- Recent Newsletters for Readers -->
+                <h4 class="mb-3 fw-bold">📧 Recent Newsletters</h4>
+                <ul class="list-group mb-4">
+                    {% for newsletter in newsletters|slice:":5" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center flex-grow-1">
+                                <div>
+                                    <a href="{% url 'newsletter_detail' newsletter.pk %}" class="fw-semibold text-decoration-none">{{ newsletter.title }}</a>
+                                    <span class="text-muted ms-2">by {{ newsletter.journalist }}</span>
+                                    {% if newsletter.publisher %}
+                                        <div class="small text-muted">Publisher: {{ newsletter.publisher.name }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <span class="text-muted small">{{ newsletter.created_at|date:"Y-m-d" }}</span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No newsletters yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% elif user.role == "publisher" %}
+            <div class="col-12">
+                <h4 class="mb-3 fw-bold">Your Publisher Organization(s)</h4>
+                {% if my_publishers %}
+                    {% for publisher in my_publishers %}
+                        <div class="mb-3 border rounded p-3 shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong>Publisher Name:</strong> {{ publisher.name }}
+                                </div>
+                                <div>
+                                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'publisher_edit' publisher.id %}">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>Editors:</strong>
+                                {% if publisher.editors.all %}
+                                    {{ publisher.editors.all|join:", " }}
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                                <br>
+                                <strong>Journalists:</strong>
+                                {% if publisher.journalists.all %}
+                                    {{ publisher.journalists.all|join:", " }}
+                                {% else %}
+                                    <span class="text-muted">None</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <h5 class="fw-bold">Articles by {{ publisher.name }}</h5>
+                        <ul class="list-group mb-4">
+                            {% for article in publisher.articles.all %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a>
+                                    <span class="text-muted ms-2">{{ article.created_at|date:"Y-m-d" }}</span>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-muted">No articles yet.</li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning">No publisher organization linked to your account.
+                        {% if user.role == 'publisher' or user.role == 'editor' %}
+                            <br>
+                            <a href="{% url 'publisher_create' %}" class="btn btn-success btn-sm mt-2">
+                                <i class="bi bi-building-add"></i> Create Publisher
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "news/base.html" %}
+{% block title %}{{ publisher.name }} — Publisher Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="row mb-3">
+    <div class="col">
+      <h2 class="fw-bold">{{ publisher.name }}</h2>
+      <div class="mb-1">
+        <span class="badge bg-primary">{{ publisher.articles.count }} articles</span>
+        <span class="badge bg-secondary">{{ publisher.editors.count }} editors</span>
+        <span class="badge bg-info">{{ publisher.journalists.count }} journalists</span>
+      </div>
+    </div>
+    <div class="col-auto text-end">
+      {% if user in publisher.editors.all or user.role == "editor" %}
+        <a href="{% url 'publisher_edit' publisher.id %}" class="btn btn-outline-primary btn-sm me-2">
+          <i class="bi bi-pencil-square"></i> Edit
+        </a>
+        <a href="{% url 'publisher_delete' publisher.id %}" class="btn btn-outline-danger btn-sm">
+          <i class="bi bi-trash"></i> Delete
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <h5 class="fw-bold mb-1">Editors</h5>
+    {% if publisher.editors.all %}
+      <ul class="list-group mb-2">
+        {% for editor in publisher.editors.all %}
+          <li class="list-group-item">{{ editor.get_full_name|default:editor.username }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="text-muted mb-2">No editors assigned.</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <h5 class="fw-bold mb-1">Journalists</h5>
+    {% if publisher.journalists.all %}
+      <ul class="list-group mb-2">
+        {% for journalist in publisher.journalists.all %}
+          <li class="list-group-item">{{ journalist.get_full_name|default:journalist.username }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="text-muted mb-2">No journalists assigned.</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <h5 class="fw-bold mb-1">Articles by {{ publisher.name }}</h5>
+    {% if publisher.articles.all %}
+      <ul class="list-group">
+        {% for article in publisher.articles.all %}
+          <li class="list-group-item">
+            <a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a>
+            <span class="text-muted ms-2">{{ article.created_at|date:"Y-m-d" }}</span>
+            <span class="badge bg-light text-dark ms-2">{{ article.get_status_display|default:article.status }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info mb-0">No articles published yet.</div>
+    {% endif %}
+  </div>
+
+  <a href="{% url 'publishers_public_list' %}" class="btn btn-link mt-2">
+    <i class="bi bi-arrow-left"></i> Back to Publishers
+  </a>
+</div>
+{% endblock %}

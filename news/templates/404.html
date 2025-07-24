@@ -1,0 +1,126 @@
+{% extends "news/base.html" %}
+{% block title %}Page Not Found - News Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-warning text-dark text-center">
+          <h1 class="display-1 mb-0">
+            <i class="bi bi-exclamation-triangle"></i>
+          </h1>
+          <h2 class="mb-0">404 - Page Not Found</h2>
+        </div>
+        <div class="card-body p-4 text-center">
+          
+          <!-- Error illustration -->
+          <div class="mb-4">
+            <i class="bi bi-newspaper display-1 text-muted"></i>
+            <div class="mt-2">
+              <i class="bi bi-question-circle display-4 text-warning"></i>
+            </div>
+          </div>
+
+          <!-- Main message -->
+          <div class="mb-4">
+            <h3 class="fw-bold mb-3">Oops! This page seems to have gone missing</h3>
+            <p class="text-muted mb-0">
+              The page you're looking for might have been moved, deleted, or you may have entered an incorrect URL.
+              Don't worry - even the best journalists sometimes lose their notes!
+            </p>
+          </div>
+
+          <!-- Suggestions -->
+          <div class="alert alert-light mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-lightbulb text-warning me-2"></i>
+              What you can do:
+            </h5>
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                Check the URL for typos
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                Go back to the previous page
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                Visit our homepage for the latest news
+              </li>
+              <li class="mb-0">
+                <i class="bi bi-arrow-right text-primary me-2"></i>
+                Use the navigation menu to find what you need
+              </li>
+            </ul>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="d-grid gap-2 d-md-block">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg me-md-2">
+              <i class="bi bi-house-door me-2"></i>
+              Go to Homepage
+            </a>
+            <button onclick="history.back()" class="btn btn-outline-secondary btn-lg">
+              <i class="bi bi-arrow-left me-2"></i>
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help section -->
+      <div class="card mt-4">
+        <div class="card-body text-center">
+          <h6 class="fw-bold mb-2">
+            <i class="bi bi-question-circle-fill text-info me-2"></i>
+            Still need help?
+          </h6>
+          <p class="small text-muted mb-3">
+            If you believe this is an error or you need assistance, feel free to explore our main sections:
+          </p>
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-newspaper me-1"></i> Latest News
+            </a>
+            <a href="{% url 'publishers_public_list' %}" class="btn btn-outline-info btn-sm">
+              <i class="bi bi-building me-1"></i> Publishers
+            </a>
+            <a href="{% url 'newsletter_list' %}" class="btn btn-outline-success btn-sm">
+              <i class="bi bi-envelope me-1"></i> Newsletters
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border-radius: 15px;
+}
+
+.btn {
+  border-radius: 25px;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.bi-exclamation-triangle {
+  animation: bounce 2s infinite;
+}
+</style>
+{% endblock %}

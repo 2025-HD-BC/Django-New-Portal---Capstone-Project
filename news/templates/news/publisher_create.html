@@ -1,0 +1,18 @@
+{% extends "news/base.html" %}
+{% block title %}Create Publisher Organization{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="mb-4 fw-bold">Create Publisher Organization</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Create Organization</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if newsletter %}Edit Newsletter{% else %}Create Newsletter{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2>
+                        {% if newsletter %}
+                            Edit Newsletter: {{ newsletter.title }}
+                        {% else %}
+                            Create New Newsletter
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Display form errors if any -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Title field -->
+                        <div class="mb-3">
+                            {{ form.title.label_tag }}
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small">
+                                    {{ form.title.errors }}
+                                </div>
+                            {% endif %}
+                            {% if form.title.help_text %}
+                                <small class="text-muted">{{ form.title.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Content field -->
+                        <div class="mb-3">
+                            {{ form.content.label_tag }}
+                            {{ form.content }}
+                            {% if form.content.errors %}
+                                <div class="text-danger small">
+                                    {{ form.content.errors }}
+                                </div>
+                            {% endif %}
+                            {% if form.content.help_text %}
+                                <small class="text-muted">{{ form.content.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">
+                                {% if newsletter %}Update Newsletter{% else %}Submit Newsletter{% endif %}
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

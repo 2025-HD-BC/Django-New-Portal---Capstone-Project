@@ -1,0 +1,56 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %}Reject Newsletter{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h2><i class="fas fa-times-circle"></i> Reject Newsletter</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <strong>Warning:</strong>
+                        You are about to reject and remove this newsletter. This action cannot be undone.
+                    </div>
+                    
+                    <div class="newsletter-preview p-3 border rounded bg-light mb-4">
+                        <h4>{{ newsletter.title }}</h4>
+                        <p class="text-muted">
+                            By <strong>{{ newsletter.journalist.username }}</strong>
+                            on {{ newsletter.created_at|date:"F d, Y" }}
+                        </p>
+                        <hr>
+                        <div class="content-preview">
+                            {{ newsletter.content|truncatewords:50|linebreaks }}
+                            {% if newsletter.content|wordcount > 50 %}
+                                <p class="text-muted"><em>... content truncated for preview</em></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Reject & Remove Newsletter
+                            </button>
+                            <div>
+                                <a href="{% url 'newsletter_detail' newsletter.pk %}" class="btn btn-info me-2">
+                                    <i class="fas fa-eye"></i> View Full Newsletter
+                                </a>
+                                <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

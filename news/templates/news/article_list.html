@@ -1,0 +1,49 @@
+{% extends "news/base.html" %}
+{% block title %}Published Articles{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center">
+  <h2 class="display-5 fw-bold mb-3">Welcome</h2>
+  <p class="lead mb-0">
+    Your daily source for curated, quality news.<br>
+    <em>Powered by The Grace of GOD &amp; your creativity.</em>
+  </p>
+</div>
+
+<h1 class="news-title">Published Articles</h1>
+<div class="row g-4 mt-2">
+    {% if articles %}
+        {% for article in articles %}
+            <div class="col-md-6 col-lg-4 d-flex">
+                <div class="card news-card flex-fill shadow-sm h-100">
+                    {% if article.image %}
+                        <img src="{{ article.image.url }}" class="card-img-top" style="height:190px;object-fit:cover;border-top-left-radius:1.1rem;border-top-right-radius:1.1rem;">
+                    {% else %}
+                        <div style="height:190px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;border-top-left-radius:1.1rem;border-top-right-radius:1.1rem;">
+                            <img src="https://img.icons8.com/ios-glyphs/60/image--v1.png" alt="No Image" style="opacity:0.45;">
+                        </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">{{ article.title }}</h5>
+                        <p class="card-text small mb-2 text-truncate" style="max-height:3.5em;">{{ article.content|truncatewords:25 }}</p>
+                        <div class="mt-auto">
+                            <small class="text-muted">
+                                By <b>{{ article.author }}</b>
+                                {% if article.publisher %} | {{ article.publisher.name }}{% endif %}
+                                &middot; {{ article.created_at|date:"Y-m-d" }}
+                            </small>
+                        </div>
+                        <a href="{% url 'article_detail' article.pk %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-secondary text-center">
+                <i>No articles published yet.</i>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

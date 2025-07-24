@@ -1,0 +1,178 @@
+{% extends "news/base.html" %}
+{% block title %}Server Error - News Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header bg-danger text-white text-center">
+          <h1 class="display-1 mb-0">
+            <i class="bi bi-exclamation-octagon"></i>
+          </h1>
+          <h2 class="mb-0">500 - Server Error</h2>
+        </div>
+        <div class="card-body p-4 text-center">
+          
+          <!-- Error illustration -->
+          <div class="mb-4">
+            <i class="bi bi-server display-1 text-muted"></i>
+            <div class="mt-2">
+              <i class="bi bi-x-octagon display-4 text-danger"></i>
+            </div>
+          </div>
+
+          <!-- Main message -->
+          <div class="mb-4">
+            <h3 class="fw-bold mb-3">Something went wrong on our end</h3>
+            <p class="text-muted mb-0">
+              We're experiencing some technical difficulties right now. Our development team has been notified
+              and is working to fix the issue. Please try again in a few moments.
+            </p>
+          </div>
+
+          <!-- Technical info (only in debug mode) -->
+          {% if debug %}
+          <div class="alert alert-warning small text-start mb-4">
+            <h6 class="fw-bold">
+              <i class="bi bi-bug me-1"></i> Debug Information:
+            </h6>
+            <p class="mb-1"><strong>Error Type:</strong> Internal Server Error</p>
+            <p class="mb-1"><strong>Status Code:</strong> 500</p>
+            <p class="mb-0"><strong>Time:</strong> {% now "Y-m-d H:i:s" %}</p>
+          </div>
+          {% endif %}
+
+          <!-- What happened -->
+          <div class="alert alert-light mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="bi bi-info-circle text-danger me-2"></i>
+              What happened?
+            </h5>
+            <ul class="list-unstyled mb-0 small text-start">
+              <li class="mb-2">
+                <i class="bi bi-dot"></i>
+                The server encountered an unexpected error while processing your request
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-dot"></i>
+                This could be due to a temporary server overload or a configuration issue
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-dot"></i>
+                Our technical team has been automatically notified
+              </li>
+              <li class="mb-0">
+                <i class="bi bi-dot"></i>
+                We're working to resolve this as quickly as possible
+              </li>
+            </ul>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="d-grid gap-2 d-md-block mb-3">
+            <button onclick="location.reload()" class="btn btn-warning btn-lg me-md-2">
+              <i class="bi bi-arrow-clockwise me-2"></i>
+              Try Again
+            </button>
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+              <i class="bi bi-house-door me-2"></i>
+              Go to Homepage
+            </a>
+          </div>
+
+          <!-- Additional help -->
+          <div class="small text-muted">
+            <p class="mb-1">
+              <i class="bi bi-clock me-1"></i>
+              If this problem persists, please try again in a few minutes.
+            </p>
+            <p class="mb-0">
+              <i class="bi bi-shield-check me-1"></i>
+              Your data is safe and no information has been lost.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status and help -->
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h6 class="fw-bold mb-2">
+                <i class="bi bi-activity text-success me-2"></i>
+                Server Status
+              </h6>
+              <p class="small text-muted mb-2">
+                We monitor our systems 24/7 to ensure the best experience.
+              </p>
+              <div class="badge bg-warning">
+                <i class="bi bi-tools me-1"></i> Under Maintenance
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body text-center">
+              <h6 class="fw-bold mb-2">
+                <i class="bi bi-question-circle-fill text-info me-2"></i>
+                Need Help?
+              </h6>
+              <p class="small text-muted mb-2">
+                Try these quick actions while we fix the issue:
+              </p>
+              <div class="d-flex justify-content-center gap-1 flex-wrap">
+                <a href="{% url 'home' %}" class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-house me-1"></i> Home
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-info btn-sm">
+                  <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  border-radius: 15px;
+}
+
+.btn {
+  border-radius: 25px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bi-exclamation-octagon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-warning:hover .bi-arrow-clockwise {
+  animation: spin 1s linear;
+}
+</style>
+{% endblock %}

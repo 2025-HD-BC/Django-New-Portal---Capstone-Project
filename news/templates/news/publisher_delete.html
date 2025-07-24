@@ -1,0 +1,35 @@
+{% extends "news/base.html" %}
+{% block title %}Delete Publisher — {{ publisher.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width:540px;">
+  <div class="card shadow border-danger">
+    <div class="card-body">
+      <h3 class="card-title text-danger mb-3">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Delete Publisher
+      </h3>
+      <p>
+        Are you sure you want to <strong>permanently delete</strong> the publisher
+        <strong>{{ publisher.name }}</strong>?
+      </p>
+      {% if publisher.articles.count > 0 %}
+        <div class="alert alert-warning p-2 mb-3">
+          <i class="bi bi-info-circle me-1"></i>
+          This publisher has <strong>{{ publisher.articles.count }}</strong> article{{ publisher.articles.count|pluralize }} linked.
+        </div>
+      {% endif %}
+      <p class="small text-muted mb-4">
+        <i class="bi bi-exclamation-circle me-1"></i>
+        This action <strong>cannot be undone</strong>.
+      </p>
+      <form method="post" class="d-flex gap-2">
+        {% csrf_token %}
+        <a href="{% url 'publisher_detail' publisher.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-danger">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

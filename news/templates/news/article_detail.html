@@ -1,0 +1,53 @@
+{% extends "news/base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow" style="border-radius: 1.2rem;">
+    <div class="card-body px-5 py-4">
+      <!-- Article Title -->
+      <h1 class="display-4 fw-bold mb-2" style="color:#273c75;">
+        {{ article.title }}
+      </h1>
+
+      <!-- Meta info -->
+      <div class="mb-3 text-muted small">
+        <span class="me-2"><strong>By {{ article.author }}</strong></span>
+        <span>| {{ article.created_at|date:"Y-m-d H:i" }}</span>
+        {% if article.publisher %}
+        <span class="ms-3"><i class="bi bi-building"></i> {{ article.publisher.name }}</span>
+        {% endif %}
+      </div>
+      <hr>
+
+      <!-- Optional image if available -->
+      {% if article.image %}
+      <div class="text-center mb-4">
+        <img src="{{ article.image.url }}" alt="Article Image" class="img-fluid rounded shadow-sm" style="max-height:320px;">
+      </div>
+      {% endif %}
+
+      <!-- Lead paragraph: highlight the first paragraph -->
+      <p class="lead mb-4" style="font-size:1.3rem; color:#2264c4; font-weight: 600;">
+        {{ article.content|linebreaksbr|slice:":200" }}{% if article.content|length > 200 %}...{% endif %}
+      </p>
+
+      <!-- Main content: rest of article, styled for readability -->
+      <div style="font-size:1.12rem; line-height:1.85; color:#222;">
+        {{ article.content|linebreaks }}
+      </div>
+
+      <!-- Delete button for permitted users -->
+      {% if user.is_authenticated %}
+        {% if user.role == "editor" or user.role == "journalist" and article.status == "pending" and article.author == user %}
+          <div class="mt-4">
+            <a href="{% url 'article_delete' article.pk %}" class="btn btn-danger">Delete Article</a>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      <div class="mt-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">← Back to News</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

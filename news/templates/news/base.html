@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}News Portal{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon-32.svg' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="shortcut icon" href="{% static 'favicon-32.svg' %}">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background: #f5f6fa;
+        }
+        .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+        .news-title {
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1.5rem;
+            color: #273c75;
+        }
+        .news-card {
+            box-shadow: 0 2px 8px rgba(30,30,30,0.10);
+            border: none;
+            border-radius: 1.1rem;
+            margin-bottom: 2rem;
+            transition: box-shadow 0.15s;
+        }
+        .news-card:hover {
+            box-shadow: 0 8px 24px rgba(44,62,80,0.14);
+        }
+        .footer {
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            margin-top: 4rem;
+            padding: 1rem 0 0.5rem 0;
+        }
+        .profile-img-navbar {
+            object-fit: cover;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        @media (max-width: 991px) {
+            .navbar-brand { font-size: 1.5rem; }
+            .news-title { font-size: 2rem; }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <img src="https://img.icons8.com/doodle/48/000000/news.png" width="32" style="margin-right:8px;">
+      News Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link{% if request.resolver_match.url_name == 'home' %} active{% endif %}" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link{% if request.resolver_match.url_name == 'publishers_public_list' %} active{% endif %}" href="{% url 'publishers_public_list' %}">Publishers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link{% if 'newsletter' in request.resolver_match.url_name %} active{% endif %}" href="{% url 'newsletter_list' %}">📧 Newsletters</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" class="profile-img-navbar" alt="Profile">
+              {% else %}
+                <img src="https://img.icons8.com/ios-filled/32/user-male-circle.png" class="profile-img-navbar" alt="Profile">
+              {% endif %}
+              {{ user.username }} ({{ user.role|capfirst }})
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              <li>
+                <a class="dropdown-item{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+              </li>
+              <li>
+                <a class="dropdown-item{% if request.resolver_match.url_name == 'profile' %} active{% endif %}" href="{% url 'profile' %}">Profile</a>
+              </li>
+              <li>
+                <a class="dropdown-item{% if request.resolver_match.url_name == 'profile_edit' %} active{% endif %}" href="{% url 'profile_edit' %}">Edit Profile</a>
+              </li>
+              {% if user.role == "reader" %}
+              <li>
+                <a class="dropdown-item{% if request.resolver_match.url_name == 'subscriptions' %} active{% endif %}" href="{% url 'subscriptions' %}">My Subscriptions</a>
+              </li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item" style="border: none; background: none; width: 100%; text-align: left; padding: 0.25rem 1rem;">
+                    Logout
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link{% if request.resolver_match.url_name == 'login' %} active{% endif %}" href="{% url 'login' %}">Login</a></li>
+          <li class="nav-item"><a class="nav-link{% if request.resolver_match.url_name == 'signup' %} active{% endif %}" href="{% url 'signup' %}">Signup</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+    {# Flash messages block #}
+    {% if messages %}
+      <div class="row">
+        <div class="col-12">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+<div class="footer">
+    &copy; {% now "Y" %} News Portal &mdash; powered by G.C.L Coetser
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
