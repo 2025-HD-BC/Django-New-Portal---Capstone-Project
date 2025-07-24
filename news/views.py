@@ -1,3 +1,11 @@
+"""
+Django News Portal Views
+
+This module contains all the view functions and classes for the news portal application.
+It handles user authentication, article management, publisher operations, and role-based
+access control for different user types (readers, journalists, editors, publishers).
+"""
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
@@ -17,29 +25,92 @@ from .constants import UserRoles, ArticleStatus, Pagination
 
 # --- ROLE TEST HELPERS ---
 def is_editor(user):
+    """
+    Check if a user has editor privileges.
+    
+    Args:
+        user: The user object to check
+        
+    Returns:
+        bool: True if user is an editor, False otherwise
+    """
     return user.is_authenticated and (user.role == UserRoles.EDITOR or user.groups.filter(name=UserRoles.EDITOR).exists())
 
 def is_journalist(user):
+    """
+    Check if a user has journalist privileges.
+    
+    Args:
+        user: The user object to check
+        
+    Returns:
+        bool: True if user is a journalist, False otherwise
+    """
     return user.is_authenticated and (user.role == UserRoles.JOURNALIST or user.groups.filter(name=UserRoles.JOURNALIST).exists())
 
 def is_reader(user):
+    """
+    Check if a user has reader privileges.
+    
+    Args:
+        user: The user object to check
+        
+    Returns:
+        bool: True if user is a reader, False otherwise
+    """
     return user.is_authenticated and (user.role == UserRoles.READER or user.groups.filter(name=UserRoles.READER).exists())
 
 def is_publisher(user):
+    """
+    Check if a user has publisher privileges.
+    
+    Args:
+        user: The user object to check
+        
+    Returns:
+        bool: True if user is a publisher, False otherwise
+    """
     return user.is_authenticated and (user.role == UserRoles.PUBLISHER or user.groups.filter(name=UserRoles.PUBLISHER).exists())
 
 # --- HOME / PUBLIC ARTICLES ---
 def home(request):
+    """
+    Display the homepage with approved articles.
+    
+    Args:
+        request: Django HTTP request object
+        
+    Returns:
+        HttpResponse: Rendered homepage with approved articles
+    """
     articles = Article.objects.filter(status=ArticleStatus.APPROVED)
     return render(request, "news/article_list.html", {"articles": articles})
 
 # --- USER PROFILE ---
 @login_required
 def profile_view(request):
+    """
+    Display the user's profile page.
+    
+    Args:
+        request: Django HTTP request object
+        
+    Returns:
+        HttpResponse: Rendered profile page
+    """
     return render(request, "news/profile.html", {"user": request.user})
 
 @login_required
 def profile_edit(request):
+    """
+    Handle user profile editing.
+    
+    Args:
+        request: Django HTTP request object
+        
+    Returns:
+        HttpResponse: Rendered profile edit form or redirect after successful update
+    """
     user = request.user
     if request.method == "POST":
         form = ProfileEditForm(request.POST, request.FILES, instance=user)
