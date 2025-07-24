@@ -16,17 +16,20 @@ RUN apt-get update \
         pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Copy requirements first for better caching
 COPY requirements.txt /app/
+
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . /app/
 
-# Create media directory
-RUN mkdir -p /app/media
+# Create necessary directories
+RUN mkdir -p /app/media /app/staticfiles
 
-# Collect static files
+# Run migrations and collect static files
+RUN python manage.py migrate --noinput
 RUN python manage.py collectstatic --noinput
 
 # Expose port
