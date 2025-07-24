@@ -1,33 +1,57 @@
 # Django News Portal
 
-A comprehensive news management system built with Django, featuring role-based access control for readers, journalists, editors, and publishers.
+A comprehensive news management system built with Django, featuring role-based access control, editorial workflows, and REST API integration.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://python.org)
+[![Django](https://img.shields.io/badge/Django-4.2+-green.svg)](https://djangoproject.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
+[![License](https://img.shields.io/badge/License-Educational-yellow.svg)](#license)
 
-- **Multi-role User System**: Support for readers, journalists, editors, and publishers
-- **Article Management**: Create, review, approve, and publish news articles
-- **Publisher Organizations**: Organize content by publishing organizations
-- **Newsletter System**: Create and distribute newsletters
-- **Subscription Management**: Allow readers to follow publishers and journalists
-- **REST API**: Comprehensive API for external integrations
-- **Admin Interface**: Django admin with custom configurations
+## 📋 Overview
 
-## User Roles
+The Django News Portal is a full-featured content management system designed for news organizations. It provides a complete editorial workflow with role-based permissions, article management, newsletter distribution, and comprehensive API access.
 
-- **Readers**: Can view approved articles, subscribe to publishers and journalists
-- **Journalists**: Can create articles and newsletters
-- **Editors**: Can review and moderate articles and newsletters
-- **Publishers**: Can manage publishing organizations
+## ✨ Key Features
 
-## Installation and Setup
+### 🏗️ **Core Functionality**
+- **Multi-role User System**: Readers, journalists, editors, and publishers with distinct permissions
+- **Editorial Workflow**: Complete article lifecycle from creation to publication
+- **Publisher Management**: Organization-based content management
+- **Newsletter System**: Create and distribute newsletters to subscribers
+- **Subscription Management**: Reader engagement and notification system
+
+### 🔧 **Technical Features**
+- **REST API**: Comprehensive API with authentication and authorization
+- **Admin Interface**: Customized Django admin with role-specific views
+- **Docker Support**: Containerized deployment for easy setup
+- **Database Flexibility**: Support for SQLite (development) and MySQL/MariaDB (production)
+- **Security**: Environment-based configuration and secure secret management
+
+### 📚 **Documentation & Quality**
+- **Comprehensive Documentation**: Sphinx-generated documentation
+- **Professional Docstrings**: Complete code documentation
+- **Git Workflow**: Proper branching and version control
+- **Testing Ready**: Structure prepared for comprehensive testing
+
+## 👥 User Roles & Permissions
+
+| Role | Capabilities | Access Level |
+|------|-------------|--------------|
+| 👤 **Reader** | View approved articles, subscribe to publishers/journalists | Public + Authenticated |
+| ✍️ **Journalist** | Create articles and newsletters, manage own content | Content Creation |
+| 📝 **Editor** | Review, approve/reject articles and newsletters | Content Moderation |
+| 🏢 **Publisher** | Manage publishing organizations and editorial teams | Organization Management |
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.13 or higher
 - pip (Python package installer)
 - Git
+- Docker (optional, for containerized deployment)
 
-### Option 1: Local Development with Virtual Environment
+### Option 1: Local Development
 
 1. **Clone the repository**
    ```bash
@@ -35,7 +59,7 @@ A comprehensive news management system built with Django, featuring role-based a
    cd Django_News_Portal
    ```
 
-2. **Create and activate virtual environment**
+2. **Set up virtual environment**
    ```bash
    # Windows
    python -m venv venv
@@ -51,39 +75,46 @@ A comprehensive news management system built with Django, featuring role-based a
    pip install -r requirements.txt
    ```
 
-4. **Environment Configuration**
-   - Create a `.env` file with your configuration
-   - **IMPORTANT**: Never commit real secrets like passwords or API keys to the repository
-   - Use environment variables for sensitive information
-
-   Example `.env` file:
+4. **Environment configuration**
+   
+   Create a `.env` file in the project root:
    ```env
    SECRET_KEY=your-django-secret-key-here
    DEBUG=True
    DATABASE_URL=sqlite:///db.sqlite3
    ALLOWED_HOSTS=localhost,127.0.0.1
+   
+   # Optional: Email configuration
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_HOST_USER=your-email@gmail.com
+   EMAIL_HOST_PASSWORD=your-app-password
+   
+   # Optional: Social media integration
+   TWITTER_API_KEY=your-twitter-api-key
+   TWITTER_API_SECRET=your-twitter-api-secret
    ```
 
-5. **Database Setup**
+5. **Database setup**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-6. **Create Superuser (Optional)**
+6. **Create superuser**
    ```bash
    python manage.py createsuperuser
    ```
 
-7. **Run the Development Server**
+7. **Run development server**
    ```bash
    python manage.py runserver
    ```
 
-8. **Access the Application**
+8. **Access the application**
    - Main application: http://127.0.0.1:8000/
    - Admin interface: http://127.0.0.1:8000/admin/
-   - API root: http://127.0.0.1:8000/api/
+   - API documentation: http://127.0.0.1:8000/api/
 
 ### Option 2: Docker Deployment
 
@@ -93,80 +124,140 @@ A comprehensive news management system built with Django, featuring role-based a
    cd Django_News_Portal
    ```
 
-2. **Build the Docker image**
+2. **Build Docker image**
    ```bash
    docker build -t django-news-portal .
    ```
 
-3. **Run the container**
+3. **Run container**
    ```bash
    docker run -p 8000:8000 django-news-portal
    ```
 
-4. **Access the Application**
+4. **Access the application**
    - Main application: http://localhost:8000/
    - Admin interface: http://localhost:8000/admin/
 
-### Docker Compose (Recommended for Production)
+### Option 3: Using Makefile (if available)
 
-Create a `docker-compose.yml` file:
-
-```yaml
-version: '3.8'
-
-services:
-  web:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - DEBUG=False
-      - SECRET_KEY=your-secret-key-here
-      - DATABASE_URL=sqlite:///db.sqlite3
-    volumes:
-      - ./media:/app/media
-      - ./static:/app/static
-```
-
-Then run:
 ```bash
-docker-compose up --build
+# View available commands
+make help
+
+# Set up development environment
+make dev-setup
+
+# Run with Docker
+make docker-build
+make docker-run
 ```
 
-## Security Configuration
+## 🏗️ Project Structure
 
-**⚠️ IMPORTANT SECURITY NOTES**: 
+```
+Django_News_Portal/
+├── 📁 news/                    # Main Django application
+│   ├── 📄 models.py           # Data models with comprehensive docstrings
+│   ├── 📄 views.py            # View functions and business logic
+│   ├── 📄 forms.py            # Django forms for user input
+│   ├── 📄 admin.py            # Custom admin interface
+│   ├── 📄 constants.py        # Application constants and choices
+│   ├── 📄 permissions.py      # Custom permission classes
+│   ├── 📄 signals.py          # Django signals for automation
+│   ├── 📁 api/                # REST API implementation
+│   ├── 📁 management/         # Custom Django commands
+│   ├── 📁 migrations/         # Database migrations
+│   ├── 📁 static/             # Static files (CSS, JS, images)
+│   └── 📁 templates/          # HTML templates
+├── 📁 news_app/               # Django project configuration
+│   ├── 📄 settings.py         # Main settings
+│   ├── 📄 sqlite_settings.py  # SQLite-specific settings
+│   ├── 📄 urls.py             # URL routing
+│   └── 📄 wsgi.py             # WSGI configuration
+├── 📁 docs/                   # Sphinx documentation
+│   ├── 📄 conf.py             # Sphinx configuration
+│   ├── 📄 index.rst           # Documentation index
+│   └── 📁 _build/html/        # Generated HTML documentation
+├── 📁 media/                  # User uploaded files
+├── 📁 static/                 # Collected static files
+├── 📄 requirements.txt        # Python dependencies
+├── 📄 Dockerfile             # Docker configuration
+├── 📄 .dockerignore          # Docker ignore rules
+├── 📄 .gitignore             # Git ignore rules
+├── 📄 manage.py              # Django management script
+├── 📄 create_demo_data.py    # Demo data generation script
+└── 📄 README.md              # This file
+```
 
-1. **Secret Management**: 
-   - Never commit real secret keys, passwords, or API tokens to version control
-   - Use environment variables or secure secret management systems
-   - Generate a new SECRET_KEY for production deployments
+## 🔌 API Documentation
 
-2. **Database Configuration**:
-   - For production, use PostgreSQL or MySQL instead of SQLite
-   - Configure proper database credentials via environment variables
+The Django News Portal provides a comprehensive REST API for external integrations and mobile applications.
 
-3. **Environment Variables**:
-   Create a `.env` file (never commit this) with:
-   ```env
-   SECRET_KEY=your-production-secret-key
-   DEBUG=False
-   DATABASE_URL=postgresql://user:password@localhost/dbname
-   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
-   ```
+### Authentication
 
-## API Documentation
+The API supports multiple authentication methods:
+- Session Authentication (for web applications)
+- Token Authentication (for mobile/external apps)
 
-The application includes a REST API with endpoints for:
+### Core Endpoints
 
-- `/api/` - API root
-- `/api/articles/` - Article management
-- `/api/publishers/` - Publisher management
-- `/api/newsletters/` - Newsletter management
+| Endpoint | Method | Description | Authentication |
+|----------|---------|-------------|----------------|
+| `/api/` | GET | API root and overview | None |
+| `/api/articles/` | GET | List approved articles | None |
+| `/api/articles/` | POST | Create new article | Required (Journalist+) |
+| `/api/articles/{id}/` | GET | Article details | None |
+| `/api/articles/{id}/` | PUT/PATCH | Update article | Required (Author/Editor) |
+| `/api/articles/{id}/` | DELETE | Delete article | Required (Author/Editor) |
+| `/api/publishers/` | GET | List publishers | None |
+| `/api/publishers/{id}/` | GET | Publisher details | None |
+| `/api/newsletters/` | GET | List newsletters | None |
+| `/api/newsletters/` | POST | Create newsletter | Required (Journalist+) |
 
-## Documentation
+### Example API Usage
 
-Comprehensive Sphinx documentation is available:
+```bash
+# Get all approved articles
+curl -X GET http://localhost:8000/api/articles/
+
+# Create a new article (requires authentication)
+curl -X POST http://localhost:8000/api/articles/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Token your-api-token" \
+  -d '{
+    "title": "Breaking News Title",
+    "content": "Article content here...",
+    "publisher": 1
+  }'
+
+# Get publisher information
+curl -X GET http://localhost:8000/api/publishers/1/
+```
+
+## 🧪 Testing
+
+The project includes a comprehensive testing structure:
+
+```bash
+# Run all tests
+python manage.py test
+
+# Run tests with coverage (if coverage is installed)
+pip install coverage
+coverage run --source='.' manage.py test
+coverage report
+coverage html  # Generate HTML coverage report
+
+# Run specific test modules
+python manage.py test news.tests
+python manage.py test news.api.tests
+```
+
+## 📚 Documentation
+
+### Sphinx Documentation
+
+Comprehensive documentation is generated using Sphinx:
 
 1. **Build documentation**
    ```bash
@@ -177,423 +268,210 @@ Comprehensive Sphinx documentation is available:
 2. **View documentation**
    Open `docs/_build/html/index.html` in your browser
 
-## Testing
+### API Documentation
 
-Run the test suite:
-```bash
-python manage.py test
+API documentation is available at `/api/` when running the development server.
+
+## 🔒 Security Considerations
+
+### Environment Variables
+
+**⚠️ IMPORTANT**: Never commit sensitive information to version control.
+
+Required environment variables for production:
+
+```env
+# Core Django settings
+SECRET_KEY=your-unique-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+
+# Database configuration (example for MySQL)
+DATABASE_URL=mysql://username:password@localhost/database_name
+
+# Email configuration
+EMAIL_HOST=smtp.yourdomain.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=noreply@yourdomain.com
+EMAIL_HOST_PASSWORD=your-email-password
+EMAIL_USE_TLS=True
+
+# Optional: Social media integration
+TWITTER_API_KEY=your-twitter-api-key
+TWITTER_API_SECRET=your-twitter-api-secret
+TWITTER_ACCESS_TOKEN=your-access-token
+TWITTER_ACCESS_TOKEN_SECRET=your-access-token-secret
 ```
 
-## Project Structure
+### Production Deployment Checklist
 
-```
-Django_News_Portal/
-├── news/                   # Main application
-│   ├── models.py          # Data models
-│   ├── views.py           # View functions
-│   ├── forms.py           # Django forms
-│   ├── admin.py           # Admin configuration
-│   ├── api/               # REST API
-│   └── templates/         # HTML templates
-├── news_app/              # Django project settings
-├── docs/                  # Sphinx documentation
-├── media/                 # User uploaded files
-├── static/                # Static files
-├── requirements.txt       # Python dependencies
-├── Dockerfile            # Docker configuration
-└── README.md             # This file
-```
+- [ ] Set `DEBUG=False`
+- [ ] Configure `ALLOWED_HOSTS`
+- [ ] Use environment variables for secrets
+- [ ] Set up proper database (PostgreSQL/MySQL)
+- [ ] Configure static file serving
+- [ ] Set up SSL/HTTPS
+- [ ] Configure proper logging
+- [ ] Set up backup systems
 
-## License
+## 🔧 Development
 
-This project is developed as part of a Django capstone project demonstrating full-stack web development skills.
+### Setting Up Development Environment
 
----
+1. **Fork the repository** on GitHub
+2. **Clone your fork** locally
+3. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Make your changes** with proper testing
+5. **Commit with descriptive messages**
+   ```bash
+   git commit -m "Add: New feature description"
+   ```
+6. **Push to your fork**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+7. **Create a Pull Request**
 
-**Note**: This is a capstone project showcasing Django development skills including authentication, authorization, database modeling, API development, containerization, and deployment strategies.
-- 📱 **API-First Design**: Complete RESTful API with comprehensive testing
-- 🎨 **Modern UI**: Responsive Bootstrap 5 interface with custom styling
-- 📧 **Real-time Integration**: Email notifications and social media posting
-- 🧪 **Test Coverage**: Comprehensive unit tests with 100% core functionality coverage
+### Code Standards
 
----
+- Follow PEP 8 Python style guidelines
+- Write comprehensive docstrings for all functions and classes
+- Include unit tests for new functionality
+- Update documentation for any API changes
+- Use meaningful variable and function names
 
-## 🚀 **Features**
+### Git Workflow
 
-### 🏆 **Code Excellence**
+This project follows a feature branch workflow:
 
-<table>
-<tr>
-<td>
+- `main` - Production-ready code
+- `develop` - Integration branch for features
+- `feature/*` - Individual feature branches
+- `hotfix/*` - Critical bug fixes
 
-**🎯 Professional Standards**
-- PEP 8 compliant codebase
-- Modular, single-responsibility functions
-- Comprehensive error handling
-- Detailed documentation & docstrings
+## 📊 Features in Detail
 
-</td>
-<td>
-
-**🔧 Architecture Quality**
-- Centralized constants management
-- Clean separation of concerns  
-- Maintainable & scalable design
-- Industry-standard patterns
-
-</td>
-</tr>
-</table>
-
-### 🛠️ **Technical Stack**
-
-<table>
-<tr>
-<td>
-
-**Backend**
-- Django 4.2+
-- Django REST Framework
-- Python 3.8+
-- MariaDB / SQLite
-
-</td>
-<td>
-
-**Frontend**
-- Bootstrap 5
-- HTML5 / CSS3
-- JavaScript
-- Responsive Design
-
-</td>
-<td>
-
-**DevOps**
-- Environment-based config
-- Unit testing
-- API documentation
-- Production-ready setup
-
-</td>
-</tr>
-</table>
-
-### 👥 **User Management & Permissions**
-
-<div align="center">
-
-| Role | Permissions | Features |
-|------|-------------|----------|
-| 👤 **Reader** | View articles & newsletters | Subscription management, personalized feeds |
-| ✍️ **Journalist** | Create & manage content | Article creation, newsletter publishing |
-| 📝 **Editor** | Review & approve content | Editorial workflow, content moderation |
-| 🏢 **Publisher** | Manage organizations | Publisher administration, team management |
-
-</div>
-
-### 📋 **Editorial Workflow**
+### Editorial Workflow
 
 ```mermaid
 graph TD
-    A[Journalist Creates Article] --> B[Article: PENDING Status]
+    A[Journalist Creates Article] --> B[Article Status: PENDING]
     B --> C{Editor Review}
-    C -->|Approve| D[Article: APPROVED]
-    C -->|Reject| E[Article: REJECTED]
-    D --> F[Email Notifications Sent]
-    D --> G[Social Media Posting]
-    E --> H[Rejection Reason Logged]
+    C -->|Approve| D[Article Status: APPROVED]
+    C -->|Reject| E[Article Status: REJECTED]
+    D --> F[Notify Subscribers]
+    D --> G[Publish to Website]
+    E --> H[Notify Author]
 ```
 
-### 🔗 **Integrations & Notifications**
+### User Management
 
-**Real-time Features:**
-- 📧 **Email Notifications**: Automated subscriber alerts on content approval
-- 🐦 **Social Media**: X (Twitter) integration for content sharing  
-- 🔄 **Auto-Assignment**: Dynamic user group management via Django signals
-- 🛡️ **Error Handling**: Graceful failure handling with comprehensive logging
+- **Custom User Model** with role-based permissions
+- **Group-based Authorization** for different user types
+- **Profile Management** with additional user information
+- **Subscription System** for reader engagement
 
----
+### Content Management
 
-## 🛠️ **Installation**
+- **Rich Text Editor** for article creation
+- **Image Upload** and management
+- **Category System** for content organization
+- **Tag Support** for content discovery
+- **Search Functionality** across articles
 
-### **Prerequisites**
-- Python 3.8+
-- MariaDB (optional - SQLite included for development)
+## 🚀 Deployment Options
 
-### **Quick Start**
+### Traditional Hosting
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/django-news-portal.git
-cd django-news-portal
+1. **Prepare production settings**
+2. **Set up database** (PostgreSQL recommended)
+3. **Configure web server** (Nginx + Gunicorn)
+4. **Set up SSL certificate**
+5. **Configure static file serving**
 
-# Install dependencies
-pip install -r requirements.txt
+### Docker Production
 
-# Environment setup
-cp .env.example .env
-# Edit .env with your configuration
-
-# Database setup
-python manage.py makemigrations
-python manage.py migrate
-python manage.py seed_groups
-
-# Create admin user
-python manage.py createsuperuser
-
-# Run the application
-python manage.py runserver
-```
-
-### **Environment Configuration**
-
-Create a `.env` file in the project root:
-
-```env
-SECRET_KEY=your-secret-key-here
-DEBUG=True
-MARIADB_DB=news_db
-MARIADB_USER=your-username
-MARIADB_PASSWORD=your-password
-MARIADB_HOST=localhost
-MARIADB_PORT=3306
-```
-
----
-
-## 🧪 **Testing**
-
-Run the comprehensive test suite:
-
-```bash
-# Run all tests
-python manage.py test
-
-# Run with coverage
-python -m coverage run --source='.' manage.py test
-python -m coverage report
-
-# Run specific test modules
-python manage.py test news.api.tests
-```
-
-### **Test Coverage**
-- ✅ API endpoint testing
-- ✅ Permission validation
-- ✅ Editorial workflow testing
-- ✅ User authentication & authorization
-
----
-
-## 📡 **API Documentation**
-
-### **Authentication**
-All API endpoints support session and token authentication.
-
-### **Core Endpoints**
-
-<details>
-<summary><b>📰 Articles API</b></summary>
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/articles/` | List approved articles | No |
-| `GET` | `/api/articles/{id}/` | Article details | No |
-| `POST` | `/api/articles/` | Create article | Yes (Journalist) |
-| `PUT` | `/api/articles/{id}/` | Update article | Yes (Author/Editor) |
-| `DELETE` | `/api/articles/{id}/` | Delete article | Yes (Author/Editor) |
-| `POST` | `/api/articles/{id}/approve/` | Approve article | Yes (Editor) |
-
-</details>
-
-<details>
-<summary><b>🏢 Publishers API</b></summary>
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/publishers/` | List publishers | No |
-| `GET` | `/api/publishers/{id}/articles/` | Publisher articles | No |
-
-</details>
-
-<details>
-<summary><b>📧 Subscriptions API</b></summary>
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| `GET` | `/api/subscriptions/feed/` | Personalized feed | Yes (Reader) |
-
-</details>
-
-### **Example API Usage**
-
-```bash
-# Get all articles
-curl -X GET http://localhost:8000/api/articles/
-
-# Create article (requires authentication)
-curl -X POST http://localhost:8000/api/articles/ \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Breaking News", "content": "Article content..."}'
-
-# Approve article (editors only)
-curl -X POST http://localhost:8000/api/articles/1/approve/ \
-  -H "Authorization: Token your-token-here"
-```
-
----
-
-## 🎨 **Demo**
-
-### **Demo Accounts**
-
-After running the demo data script, you can explore the application with:
-
-| Role | Username | Password | Capabilities |
-|------|----------|----------|-------------|
-| 👤 Reader | `demo_reader` | `demo123` | Browse articles, manage subscriptions |
-| ✍️ Journalist | `demo_journalist` | `demo123` | Create articles and newsletters |
-| 📝 Editor | `demo_editor` | `demo123` | Review and approve content |
-| 🏢 Publisher | `demo_publisher` | `demo123` | Manage publisher settings |
-
-```bash
-# Generate demo data
-python create_demo_data.py
-```
-
----
-
-## 🏗️ **Architecture**
-
-<div align="center">
-
-```
-┌─────────────────────────────────────────────────┐
-│                   Django App                    │
-├─────────────────┬─────────────────┬─────────────┤
-│   Models Layer  │  Views Layer    │  API Layer  │
-│   - CustomUser  │  - Dashboard    │  - REST API │
-│   - Article     │  - Editorial    │  - Auth     │
-│   - Publisher   │  - Permissions  │  - Testing  │
-│   - Newsletter  │  - Workflow     │  - Docs     │
-└─────────────────┴─────────────────┴─────────────┘
-            │                   │
-    ┌───────────────┐   ┌───────────────┐
-    │   Database    │   │  Integrations │
-    │  - MariaDB    │   │  - Email SMTP │
-    │  - SQLite     │   │  - X/Twitter  │
-    │  - Migrations │   │  - Signals    │
-    └───────────────┘   └───────────────┘
-```
-
-</div>
-
-### **Core Components**
-
-- 🗄️ **Models**: Custom user model with role-based permissions, article workflow, publisher relationships
-- 🎯 **Views**: Role-based dashboards, editorial interface, permission-controlled access
-- 🔌 **API**: RESTful endpoints with comprehensive authentication and authorization
-- 📧 **Signals**: Real-time notifications, social integration, automated workflows
-
----
-
-## 🔧 **Troubleshooting**
-
-<details>
-<summary><b>🐛 Common Issues</b></summary>
-
-**ModuleNotFoundError: No module named 'requests'**
-```bash
-pip install requests
-```
-
-**Database Connection Issues**
-```bash
-# Ensure MariaDB is running
-sudo systemctl start mariadb
-
-# Create database
-mysql -u root -p
-CREATE DATABASE news_db;
-GRANT ALL PRIVILEGES ON news_db.* TO 'your_user'@'localhost';
-```
-
-**Permission Errors**
-```bash
-python manage.py seed_groups
-```
-
-</details>
-
----
-
-## 🚀 **Production Deployment**
-
-### **Environment Setup**
-1. Set `DEBUG=False` in production
-2. Configure `ALLOWED_HOSTS`
-3. Set up proper database credentials
-4. Configure static file serving
-5. Set up SSL/HTTPS
-
-### **Docker Support** (Optional)
 ```dockerfile
-# Dockerfile example
-FROM python:3.9
+# Production Dockerfile example
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    default-libmysqlclient-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application
 COPY . .
-CMD ["gunicorn", "news_app.wsgi:application"]
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Run with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "news_app.wsgi:application"]
 ```
 
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+### Ways to Contribute
+
+- 🐛 **Bug Reports**: Report bugs using GitHub Issues
+- 💡 **Feature Requests**: Suggest new features
+- 📝 **Documentation**: Improve documentation
+- 🧪 **Testing**: Add test coverage
+- 🔧 **Code**: Submit pull requests
+
+## 📄 License
+
+This project is created as an educational capstone project demonstrating advanced Django development skills, including:
+
+- Full-stack web development
+- RESTful API design
+- Database modeling and relationships
+- User authentication and authorization
+- Docker containerization
+- Professional documentation practices
+- Git version control workflows
+
+## 🙏 Acknowledgments
+
+- Django Software Foundation for the excellent framework
+- Python community for comprehensive libraries
+- Bootstrap team for responsive UI components
+- Docker team for containerization technology
+
+## 📞 Support
+
+For questions about this educational project:
+
+1. **Check the documentation** in the `docs/` directory
+2. **Review the code comments** and docstrings
+3. **Examine the test files** for usage examples
+4. **Create an issue** on GitHub for bugs or questions
+
 ---
-
-## 🤝 **Contributing**
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-### **Development Setup**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### **Code Standards**
-- Follow PEP 8 guidelines
-- Write comprehensive tests
-- Update documentation
-- Use meaningful commit messages
-
----
-
-## � **Project Stats**
 
 <div align="center">
 
-![Lines of Code](https://img.shields.io/badge/Lines%20of%20Code-2000+-blue?style=flat-square)
-![Test Coverage](https://img.shields.io/badge/Test%20Coverage-90%25+-green?style=flat-square)
-![Code Quality](https://img.shields.io/badge/Code%20Quality-A+-gold?style=flat-square)
+**⭐ If you found this project helpful, please give it a star! ⭐**
 
-**Built with ❤️ using Django & Python**
+Built with ❤️ using Django and Python
 
-</div>
-
----
-
-## 📄 **License**
-
-This project is created as a capstone project demonstrating advanced Django development skills and professional coding standards.
-
----
-
-<div align="center">
-
-**⭐ Star this repository if you found it helpful! ⭐**
-
-[🔝 Back to top](#-django-news-portal)
+[🔝 Back to top](#django-news-portal)
 
 </div>
