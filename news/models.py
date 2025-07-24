@@ -1,3 +1,10 @@
+"""
+Django News Portal Models
+
+This module contains the core data models for the news portal application,
+including user management, article publishing, and subscription functionality.
+"""
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
@@ -6,6 +13,12 @@ from .constants import UserRoles, ArticleStatus, FileUpload
 
 
 class Publisher(models.Model):
+    """
+    Represents a news publishing organization.
+    
+    Publishers can have multiple editors and journalists associated with them.
+    Editors can moderate articles, while journalists can create content.
+    """
     name = models.CharField(max_length=100)
     editors = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="editor_of_publishers", blank=True
@@ -15,10 +28,17 @@ class Publisher(models.Model):
     )
 
     def __str__(self):
+        """Return the publisher's name as string representation."""
         return self.name
 
 
 class CustomUser(AbstractUser):
+    """
+    Extended user model for the news portal application.
+    
+    Supports different user roles (reader, journalist, editor, publisher)
+    with role-specific fields and functionality.
+    """
     role = models.CharField(max_length=20, choices=UserRoles.CHOICES, default=UserRoles.READER)
     
     # Reader-only
@@ -35,6 +55,9 @@ class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        """
+        Override save method to clear reader-only fields for non-reader roles.
+        """
         super().save(*args, **kwargs)
         # If journalist, clear reader-only fields
         if self.role == UserRoles.JOURNALIST:
@@ -42,12 +65,19 @@ class CustomUser(AbstractUser):
             self.subscriptions_journalists.clear()
 
     def __str__(self):
+        """Return the username as string representation."""
         return self.username
 
 class Article(models.Model):
+    """
+    Represents a news article in the system.
+    
+    Articles go through a moderation process with pending, approved, and rejected states.
+    Only approved articles are visible to the public.
+    """
     # Status constants for backward compatibility
     STATUS_PENDING = ArticleStatus.PENDING
-    STATUS_APPROVED = ArticleStatus.APPROVED  
+    STATUS_APPROVED = ArticleStatus.APPROVED
     STATUS_REJECTED = ArticleStatus.REJECTED
     
     title = models.CharField(max_length=200)
@@ -74,25 +104,36 @@ class Article(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
+        """Return article title with status information."""
         return f"{self.title} ({self.get_status_display()})"
 
     def get_absolute_url(self):
+        """Return the canonical URL for this article."""
         from django.urls import reverse
         return reverse("article_detail", args=[str(self.pk)])
 
     @property
     def is_pending(self):
+        """Check if article is in pending status."""
         return self.status == ArticleStatus.PENDING
 
     @property
     def is_approved(self):
+        """Check if article is approved."""
         return self.status == ArticleStatus.APPROVED
 
     @property
     def is_rejected(self):
+        """Check if article is rejected."""
         return self.status == ArticleStatus.REJECTED
 
     def approve(self, reviewer):
+        """
+        Approve the article and set reviewer information.
+        
+        Args:
+            reviewer: The user who is approving the article
+        """
         self.status = ArticleStatus.APPROVED
         self.reviewed_by = reviewer
         self.reviewed_at = timezone.now()
@@ -100,6 +141,13 @@ class Article(models.Model):
         self.save()
 
     def reject(self, reviewer, reason):
+        """
+        Reject the article with a reason and set reviewer information.
+        
+        Args:
+            reviewer: The user who is rejecting the article
+            reason: The reason for rejection
+        """
         self.status = ArticleStatus.REJECTED
         self.reviewed_by = reviewer
         self.reviewed_at = timezone.now()
@@ -107,6 +155,11 @@ class Article(models.Model):
         self.save()
 
 class Newsletter(models.Model):
+    """
+    Represents a newsletter created by journalists.
+    
+    Newsletters require approval from editors before being published.
+    """
     title = models.CharField(max_length=200)
     content = models.TextField()
     journalist = models.ForeignKey(
@@ -122,6 +175,7 @@ class Newsletter(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
+        """Return the newsletter title as string representation."""
         return self.title
 
 
