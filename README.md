@@ -1,53 +1,216 @@
-# 📰 Django News Portal
+# Django News Portal
 
-<div align="center">
+A comprehensive news management system built with Django, featuring role-based access control for readers, journalists, editors, and publishers.
 
-![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
-![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
-![MariaDB](---
+## Features
 
-## 📊 **Project Stats**
+- **Multi-role User System**: Support for readers, journalists, editors, and publishers
+- **Article Management**: Create, review, approve, and publish news articles
+- **Publisher Organizations**: Organize content by publishing organizations
+- **Newsletter System**: Create and distribute newsletters
+- **Subscription Management**: Allow readers to follow publishers and journalists
+- **REST API**: Comprehensive API for external integrations
+- **Admin Interface**: Django admin with custom configurations
 
-<div align="center">
+## User Roles
 
-![Lines of Code](https://img.shields.io/badge/Lines%20of%20Code-2000+-blue?style=flat-square)
-![Test Coverage](https://img.shields.io/badge/Test%20Coverage-90%25+-green?style=flat-square)
-![Code Quality](https://img.shields.io/badge/Code%20Quality-A+-gold?style=flat-square)
+- **Readers**: Can view approved articles, subscribe to publishers and journalists
+- **Journalists**: Can create articles and newsletters
+- **Editors**: Can review and moderate articles and newsletters
+- **Publishers**: Can manage publishing organizations
 
-**Built with ❤️ using Django & Python**
+## Installation and Setup
 
-</div>hields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+### Prerequisites
 
-**A professional-grade news publishing platform with editorial workflow, role-based permissions, and RESTful API**
+- Python 3.13 or higher
+- pip (Python package installer)
+- Git
 
-[Demo](#-demo) • [Installation](#️-installation) • [API Docs](#-api-documentation) • [Contributing](#-contributing)
+### Option 1: Local Development with Virtual Environment
 
-</div>
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_REPO_URL>
+   cd Django_News_Portal
+   ```
+
+2. **Create and activate virtual environment**
+   ```bash
+   # Windows
+   python -m venv venv
+   venv\Scripts\activate
+   
+   # macOS/Linux
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Environment Configuration**
+   - Create a `.env` file with your configuration
+   - **IMPORTANT**: Never commit real secrets like passwords or API keys to the repository
+   - Use environment variables for sensitive information
+
+   Example `.env` file:
+   ```env
+   SECRET_KEY=your-django-secret-key-here
+   DEBUG=True
+   DATABASE_URL=sqlite:///db.sqlite3
+   ALLOWED_HOSTS=localhost,127.0.0.1
+   ```
+
+5. **Database Setup**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+6. **Create Superuser (Optional)**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **Run the Development Server**
+   ```bash
+   python manage.py runserver
+   ```
+
+8. **Access the Application**
+   - Main application: http://127.0.0.1:8000/
+   - Admin interface: http://127.0.0.1:8000/admin/
+   - API root: http://127.0.0.1:8000/api/
+
+### Option 2: Docker Deployment
+
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_REPO_URL>
+   cd Django_News_Portal
+   ```
+
+2. **Build the Docker image**
+   ```bash
+   docker build -t django-news-portal .
+   ```
+
+3. **Run the container**
+   ```bash
+   docker run -p 8000:8000 django-news-portal
+   ```
+
+4. **Access the Application**
+   - Main application: http://localhost:8000/
+   - Admin interface: http://localhost:8000/admin/
+
+### Docker Compose (Recommended for Production)
+
+Create a `docker-compose.yml` file:
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=sqlite:///db.sqlite3
+    volumes:
+      - ./media:/app/media
+      - ./static:/app/static
+```
+
+Then run:
+```bash
+docker-compose up --build
+```
+
+## Security Configuration
+
+**⚠️ IMPORTANT SECURITY NOTES**: 
+
+1. **Secret Management**: 
+   - Never commit real secret keys, passwords, or API tokens to version control
+   - Use environment variables or secure secret management systems
+   - Generate a new SECRET_KEY for production deployments
+
+2. **Database Configuration**:
+   - For production, use PostgreSQL or MySQL instead of SQLite
+   - Configure proper database credentials via environment variables
+
+3. **Environment Variables**:
+   Create a `.env` file (never commit this) with:
+   ```env
+   SECRET_KEY=your-production-secret-key
+   DEBUG=False
+   DATABASE_URL=postgresql://user:password@localhost/dbname
+   ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+   ```
+
+## API Documentation
+
+The application includes a REST API with endpoints for:
+
+- `/api/` - API root
+- `/api/articles/` - Article management
+- `/api/publishers/` - Publisher management
+- `/api/newsletters/` - Newsletter management
+
+## Documentation
+
+Comprehensive Sphinx documentation is available:
+
+1. **Build documentation**
+   ```bash
+   cd docs
+   make html
+   ```
+
+2. **View documentation**
+   Open `docs/_build/html/index.html` in your browser
+
+## Testing
+
+Run the test suite:
+```bash
+python manage.py test
+```
+
+## Project Structure
+
+```
+Django_News_Portal/
+├── news/                   # Main application
+│   ├── models.py          # Data models
+│   ├── views.py           # View functions
+│   ├── forms.py           # Django forms
+│   ├── admin.py           # Admin configuration
+│   ├── api/               # REST API
+│   └── templates/         # HTML templates
+├── news_app/              # Django project settings
+├── docs/                  # Sphinx documentation
+├── media/                 # User uploaded files
+├── static/                # Static files
+├── requirements.txt       # Python dependencies
+├── Dockerfile            # Docker configuration
+└── README.md             # This file
+```
+
+## License
+
+This project is developed as part of a Django capstone project demonstrating full-stack web development skills.
 
 ---
 
-## 🎯 **Project Status**
-
-<div align="center">
-
-### ✅ **100% COMPLETE - PORTFOLIO READY**
-
-![Code Quality](https://img.shields.io/badge/Code%20Quality-PEP8%20Compliant-green?style=flat-square)
-![Test Coverage](https://img.shields.io/badge/Tests-Passing-brightgreen?style=flat-square)
-![Documentation](https://img.shields.io/badge/Documentation-Complete-blue?style=flat-square)
-![Production Ready](https://img.shields.io/badge/Production-Ready-gold?style=flat-square)
-
-</div>
-
-
-## 📖 **About**
-
-A comprehensive Django-based news publishing platform that demonstrates professional web development practices. Built with Django REST Framework, this application provides a complete editorial workflow with role-based access control, real-time notifications, and a modern Bootstrap UI.
-
-### 🌟 **Key Highlights**
-- 🏗️ **Professional Architecture**: Clean, maintainable code following Django best practices
-- 🔐 **Security First**: Role-based permissions with Django Groups integration
+**Note**: This is a capstone project showcasing Django development skills including authentication, authorization, database modeling, API development, containerization, and deployment strategies.
 - 📱 **API-First Design**: Complete RESTful API with comprehensive testing
 - 🎨 **Modern UI**: Responsive Bootstrap 5 interface with custom styling
 - 📧 **Real-time Integration**: Email notifications and social media posting
