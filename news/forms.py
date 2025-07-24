@@ -1,3 +1,11 @@
+"""
+Django News Portal Forms
+
+This module contains all the form classes for the news portal application.
+It includes forms for user registration, profile editing, article submission,
+publisher management, and newsletter creation.
+"""
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import Article, CustomUser, Publisher, Newsletter
@@ -5,6 +13,9 @@ from .models import Article, CustomUser, Publisher, Newsletter
 class ArticleForm(forms.ModelForm):
     """
     Form for journalists to submit or edit news articles.
+    
+    Includes fields for title, content, publisher association, and optional image upload.
+    Styled with Bootstrap CSS classes for consistent appearance.
     """
     class Meta:
         model = Article
@@ -24,7 +35,10 @@ class ArticleForm(forms.ModelForm):
 
 class CustomUserSignupForm(UserCreationForm):
     """
-    User registration form (reader, editor, journalist, publisher).
+    User registration form supporting multiple user roles.
+    
+    Extends Django's UserCreationForm to include role selection and email field.
+    Supports registration for readers, editors, journalists, and publishers.
     """
     class Meta:
         model = CustomUser
@@ -45,7 +59,10 @@ class CustomUserSignupForm(UserCreationForm):
 
 class ProfileEditForm(forms.ModelForm):
     """
-    Form for users to update their profile details.
+    Form for users to update their profile information.
+    
+    Allows users to modify their username, email, profile image, contact number,
+    and biographical information. Provides proper validation and Bootstrap styling.
     """
     class Meta:
         model = CustomUser
@@ -68,8 +85,10 @@ class ProfileEditForm(forms.ModelForm):
 
 class PublisherForm(forms.ModelForm):
     """
-    Publisher organization creation/editing form.
-    Editors/journalists can be added via multi-select fields.
+    Form for creating and editing publisher organizations.
+    
+    Allows association of editors and journalists with publishers through
+    multi-select fields. Automatically filters user choices based on appropriate roles.
     """
     class Meta:
         model = Publisher
@@ -90,6 +109,12 @@ class PublisherForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form with role-based user filtering.
+        
+        Limits editor choices to users with editor/publisher roles and
+        journalist choices to users with journalist role.
+        """
         super().__init__(*args, **kwargs)
         # Limit choices to users of appropriate roles
         self.fields['editors'].queryset = CustomUser.objects.filter(role__in=['editor', 'publisher'])
@@ -97,7 +122,10 @@ class PublisherForm(forms.ModelForm):
 
 class NewsletterForm(forms.ModelForm):
     """
-    Form for journalists to submit newsletters.
+    Form for journalists to create and submit newsletters.
+    
+    Provides fields for newsletter title, content, and optional publisher association.
+    Automatically filters publisher choices based on the user's associations.
     """
     class Meta:
         model = Newsletter
@@ -118,6 +146,15 @@ class NewsletterForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Initialize the form with user-specific publisher filtering.
+        
+        Args:
+            user: The current user, used to filter available publishers
+            
+        Limits publisher choices to those associated with the user if applicable,
+        otherwise shows all publishers. Makes publisher field optional.
+        """
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         
