@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Django News Portal Documentation &mdash; Django News Portal 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="News Models" href="modules/news.models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Django News Portal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.models.html">News Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.views.html">News Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.forms.html">News Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.admin.html">News Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.api.html">News API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Django News Portal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Django News Portal Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="django-news-portal-documentation">
+<h1>Django News Portal Documentation<a class="headerlink" href="#django-news-portal-documentation" title="Link to this heading"></a></h1>
+<p>Welcome to the Django News Portal documentation. This application provides a comprehensive
+news management system with role-based access control for readers, journalists, editors,
+and publishers.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>User Management</strong>: Multi-role user system with custom authentication</p></li>
+<li><p><strong>Article Management</strong>: Create, review, approve, and publish news articles</p></li>
+<li><p><strong>Publisher System</strong>: Organize content by publishing organizations</p></li>
+<li><p><strong>Newsletter System</strong>: Create and distribute newsletters</p></li>
+<li><p><strong>Subscription System</strong>: Allow readers to follow publishers and journalists</p></li>
+<li><p><strong>REST API</strong>: Comprehensive API for external integrations</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.models.html">News Models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.models.html#news.models.Article"><code class="docutils literal notranslate"><span class="pre">Article</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.models.html#news.models.CustomUser"><code class="docutils literal notranslate"><span class="pre">CustomUser</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.models.html#news.models.Newsletter"><code class="docutils literal notranslate"><span class="pre">Newsletter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.models.html#news.models.Publisher"><code class="docutils literal notranslate"><span class="pre">Publisher</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.models.html#news.models.Subscription"><code class="docutils literal notranslate"><span class="pre">Subscription</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.views.html">News Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.ArticleDeleteView"><code class="docutils literal notranslate"><span class="pre">ArticleDeleteView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.MyLogoutView"><code class="docutils literal notranslate"><span class="pre">MyLogoutView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.RoleBasedLoginView"><code class="docutils literal notranslate"><span class="pre">RoleBasedLoginView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.article_approve"><code class="docutils literal notranslate"><span class="pre">article_approve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.article_create"><code class="docutils literal notranslate"><span class="pre">article_create()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.article_detail"><code class="docutils literal notranslate"><span class="pre">article_detail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.article_reject"><code class="docutils literal notranslate"><span class="pre">article_reject()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.custom_403"><code class="docutils literal notranslate"><span class="pre">custom_403()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.custom_404"><code class="docutils literal notranslate"><span class="pre">custom_404()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.custom_500"><code class="docutils literal notranslate"><span class="pre">custom_500()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.dashboard"><code class="docutils literal notranslate"><span class="pre">dashboard()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.error_test"><code class="docutils literal notranslate"><span class="pre">error_test()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.home"><code class="docutils literal notranslate"><span class="pre">home()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.is_editor"><code class="docutils literal notranslate"><span class="pre">is_editor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.is_journalist"><code class="docutils literal notranslate"><span class="pre">is_journalist()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.is_publisher"><code class="docutils literal notranslate"><span class="pre">is_publisher()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.is_reader"><code class="docutils literal notranslate"><span class="pre">is_reader()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_approve"><code class="docutils literal notranslate"><span class="pre">newsletter_approve()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_create"><code class="docutils literal notranslate"><span class="pre">newsletter_create()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_detail"><code class="docutils literal notranslate"><span class="pre">newsletter_detail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_edit"><code class="docutils literal notranslate"><span class="pre">newsletter_edit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_list"><code class="docutils literal notranslate"><span class="pre">newsletter_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.newsletter_reject"><code class="docutils literal notranslate"><span class="pre">newsletter_reject()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.profile_edit"><code class="docutils literal notranslate"><span class="pre">profile_edit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.profile_view"><code class="docutils literal notranslate"><span class="pre">profile_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publisher_create"><code class="docutils literal notranslate"><span class="pre">publisher_create()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publisher_delete"><code class="docutils literal notranslate"><span class="pre">publisher_delete()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publisher_detail"><code class="docutils literal notranslate"><span class="pre">publisher_detail()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publisher_edit"><code class="docutils literal notranslate"><span class="pre">publisher_edit()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publisher_list"><code class="docutils literal notranslate"><span class="pre">publisher_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.publishers_public_list"><code class="docutils literal notranslate"><span class="pre">publishers_public_list()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.signup"><code class="docutils literal notranslate"><span class="pre">signup()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.subscribe_journalist"><code class="docutils literal notranslate"><span class="pre">subscribe_journalist()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.subscribe_publisher"><code class="docutils literal notranslate"><span class="pre">subscribe_publisher()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.subscriptions_view"><code class="docutils literal notranslate"><span class="pre">subscriptions_view()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.template_test"><code class="docutils literal notranslate"><span class="pre">template_test()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.test_403"><code class="docutils literal notranslate"><span class="pre">test_403()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.test_500"><code class="docutils literal notranslate"><span class="pre">test_500()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.unsubscribe_journalist"><code class="docutils literal notranslate"><span class="pre">unsubscribe_journalist()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.views.html#news.views.unsubscribe_publisher"><code class="docutils literal notranslate"><span class="pre">unsubscribe_publisher()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.forms.html">News Forms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.forms.html#news.forms.ArticleForm"><code class="docutils literal notranslate"><span class="pre">ArticleForm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.forms.html#news.forms.CustomUserSignupForm"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.forms.html#news.forms.NewsletterForm"><code class="docutils literal notranslate"><span class="pre">NewsletterForm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.forms.html#news.forms.ProfileEditForm"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.forms.html#news.forms.PublisherForm"><code class="docutils literal notranslate"><span class="pre">PublisherForm</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.admin.html">News Admin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.admin.html#news.admin.ArticleAdmin"><code class="docutils literal notranslate"><span class="pre">ArticleAdmin</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.admin.html#news.admin.CustomUserAdmin"><code class="docutils literal notranslate"><span class="pre">CustomUserAdmin</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.admin.html#news.admin.NewsletterAdmin"><code class="docutils literal notranslate"><span class="pre">NewsletterAdmin</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.admin.html#news.admin.PublisherAdmin"><code class="docutils literal notranslate"><span class="pre">PublisherAdmin</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/news.api.html">News API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.ArticleApproveView"><code class="docutils literal notranslate"><span class="pre">ArticleApproveView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.ArticleViewSet"><code class="docutils literal notranslate"><span class="pre">ArticleViewSet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.NewsletterViewSet"><code class="docutils literal notranslate"><span class="pre">NewsletterViewSet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.PublisherViewSet"><code class="docutils literal notranslate"><span class="pre">PublisherViewSet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.SubscriptionFeedView"><code class="docutils literal notranslate"><span class="pre">SubscriptionFeedView</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.UserViewSet"><code class="docutils literal notranslate"><span class="pre">UserViewSet</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.api_journalist_articles"><code class="docutils literal notranslate"><span class="pre">api_journalist_articles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.api_publisher_articles"><code class="docutils literal notranslate"><span class="pre">api_publisher_articles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.views.api_subscribed_articles"><code class="docutils literal notranslate"><span class="pre">api_subscribed_articles()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.serializers.ArticleSerializer"><code class="docutils literal notranslate"><span class="pre">ArticleSerializer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.serializers.CustomUserSerializer"><code class="docutils literal notranslate"><span class="pre">CustomUserSerializer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.serializers.NewsletterSerializer"><code class="docutils literal notranslate"><span class="pre">NewsletterSerializer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/news.api.html#news.api.serializers.PublisherSerializer"><code class="docutils literal notranslate"><span class="pre">PublisherSerializer</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules/news.models.html" class="btn btn-neutral float-right" title="News Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Developer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

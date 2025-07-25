@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Forms &mdash; Django News Portal 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="News Admin" href="news.admin.html" />
+    <link rel="prev" title="News Views" href="news.views.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Django News Portal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="news.models.html">News Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.views.html">News Views</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">News Forms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#news.forms.ArticleForm"><code class="docutils literal notranslate"><span class="pre">ArticleForm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ArticleForm.Meta"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ArticleForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ArticleForm.Meta.labels"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ArticleForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ArticleForm.Meta.widgets"><code class="docutils literal notranslate"><span class="pre">ArticleForm.Meta.widgets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ArticleForm.base_fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.base_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ArticleForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">ArticleForm.declared_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ArticleForm.media"><code class="docutils literal notranslate"><span class="pre">ArticleForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#news.forms.CustomUserSignupForm"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta.help_texts"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta.help_texts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta.labels"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.CustomUserSignupForm.Meta.widgets"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.Meta.widgets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.CustomUserSignupForm.base_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.base_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.CustomUserSignupForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.declared_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.CustomUserSignupForm.media"><code class="docutils literal notranslate"><span class="pre">CustomUserSignupForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#news.forms.NewsletterForm"><code class="docutils literal notranslate"><span class="pre">NewsletterForm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.NewsletterForm.Meta"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm.Meta.help_texts"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.help_texts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm.Meta.labels"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.NewsletterForm.Meta.widgets"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.Meta.widgets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.NewsletterForm.base_fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.base_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.NewsletterForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.declared_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.NewsletterForm.media"><code class="docutils literal notranslate"><span class="pre">NewsletterForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#news.forms.ProfileEditForm"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta.help_texts"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta.help_texts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta.labels"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.ProfileEditForm.Meta.widgets"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.Meta.widgets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ProfileEditForm.base_fields"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.base_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ProfileEditForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.declared_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.ProfileEditForm.media"><code class="docutils literal notranslate"><span class="pre">ProfileEditForm.media</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#news.forms.PublisherForm"><code class="docutils literal notranslate"><span class="pre">PublisherForm</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.PublisherForm.Meta"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm.Meta.fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm.Meta.help_texts"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.help_texts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm.Meta.labels"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.labels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm.Meta.model"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#news.forms.PublisherForm.Meta.widgets"><code class="docutils literal notranslate"><span class="pre">PublisherForm.Meta.widgets</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.PublisherForm.base_fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.base_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.PublisherForm.declared_fields"><code class="docutils literal notranslate"><span class="pre">PublisherForm.declared_fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#news.forms.PublisherForm.media"><code class="docutils literal notranslate"><span class="pre">PublisherForm.media</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="news.admin.html">News Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.api.html">News API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Django News Portal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">News Forms</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/news.forms.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-news.forms">
+<span id="news-forms"></span><h1>News Forms<a class="headerlink" href="#module-news.forms" title="Link to this heading"></a></h1>
+<p>Django News Portal Forms</p>
+<p>This module contains all the form classes for the news portal application.
+It includes forms for user registration, profile editing, article submission,
+publisher management, and newsletter creation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.ArticleForm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news.forms.</span></span><span class="sig-name descname"><span class="pre">ArticleForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/news/forms.html#ArticleForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.ArticleForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form for journalists to submit or edit news articles.</p>
+<p>Includes fields for title, content, publisher association, and optional image upload.
+Styled with Bootstrap CSS classes for consistent appearance.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../_modules/news/forms.html#ArticleForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.ArticleForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['title',</span> <span class="pre">'content',</span> <span class="pre">'publisher',</span> <span class="pre">'image']</span></em><a class="headerlink" href="#news.forms.ArticleForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">'Article</span> <span class="pre">Body',</span> <span class="pre">'image':</span> <span class="pre">'Article</span> <span class="pre">Image</span> <span class="pre">(optional)',</span> <span class="pre">'publisher':</span> <span class="pre">'Publisher</span> <span class="pre">Organization',</span> <span class="pre">'title':</span> <span class="pre">'Headline'}</span></em><a class="headerlink" href="#news.forms.ArticleForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#news.forms.ArticleForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="news.models.html#news.models.Article" title="news.models.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.widgets.Textarea</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.widgets.ClearableFileInput</span> <span class="pre">object&gt;,</span> <span class="pre">'publisher':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.ArticleForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'publisher':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.ArticleForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#news.forms.ArticleForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="news.forms.ArticleForm.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#news.forms.ArticleForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news.forms.</span></span><span class="sig-name descname"><span class="pre">CustomUserSignupForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/news/forms.html#CustomUserSignupForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.CustomUserSignupForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserCreationForm</span></code></p>
+<p>User registration form supporting multiple user roles.</p>
+<p>Extends Django’s UserCreationForm to include role selection and email field.
+Supports registration for readers, editors, journalists, and publishers.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../_modules/news/forms.html#CustomUserSignupForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['username',</span> <span class="pre">'email',</span> <span class="pre">'role',</span> <span class="pre">'password1',</span> <span class="pre">'password2']</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta.help_texts">
+<span class="sig-name descname"><span class="pre">help_texts</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'role':</span> <span class="pre">'Choose</span> <span class="pre">your</span> <span class="pre">role:</span> <span class="pre">Reader,</span> <span class="pre">Editor,</span> <span class="pre">Journalist,</span> <span class="pre">or</span> <span class="pre">Publisher.'}</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta.help_texts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'role':</span> <span class="pre">'Account</span> <span class="pre">Type'}</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="news.models.html#news.models.CustomUser" title="news.models.CustomUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomUser</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.widgets.EmailInput</span> <span class="pre">object&gt;,</span> <span class="pre">'password1':</span> <span class="pre">&lt;django.forms.widgets.PasswordInput</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.widgets.PasswordInput</span> <span class="pre">object&gt;,</span> <span class="pre">'role':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'role':</span> <span class="pre">&lt;django.forms.fields.TypedChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password1':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'password2':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.CustomUserSignupForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="news.forms.CustomUserSignupForm.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#news.forms.CustomUserSignupForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news.forms.</span></span><span class="sig-name descname"><span class="pre">NewsletterForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/news/forms.html#NewsletterForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.NewsletterForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form for journalists to create and submit newsletters.</p>
+<p>Provides fields for newsletter title, content, and optional publisher association.
+Automatically filters publisher choices based on the user’s associations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../_modules/news/forms.html#NewsletterForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.NewsletterForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['title',</span> <span class="pre">'content',</span> <span class="pre">'publisher']</span></em><a class="headerlink" href="#news.forms.NewsletterForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta.help_texts">
+<span class="sig-name descname"><span class="pre">help_texts</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">'Write</span> <span class="pre">the</span> <span class="pre">full</span> <span class="pre">newsletter</span> <span class="pre">content</span> <span class="pre">here.',</span> <span class="pre">'publisher':</span> <span class="pre">'Select</span> <span class="pre">a</span> <span class="pre">publisher</span> <span class="pre">to</span> <span class="pre">associate</span> <span class="pre">with</span> <span class="pre">this</span> <span class="pre">newsletter</span> <span class="pre">(optional).'}</span></em><a class="headerlink" href="#news.forms.NewsletterForm.Meta.help_texts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">'Newsletter</span> <span class="pre">Body',</span> <span class="pre">'publisher':</span> <span class="pre">'Publisher</span> <span class="pre">(Optional)',</span> <span class="pre">'title':</span> <span class="pre">'Newsletter</span> <span class="pre">Title'}</span></em><a class="headerlink" href="#news.forms.NewsletterForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#news.forms.NewsletterForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="news.models.html#news.models.Newsletter" title="news.models.Newsletter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Newsletter</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.widgets.Textarea</span> <span class="pre">object&gt;,</span> <span class="pre">'publisher':</span> <span class="pre">&lt;django.forms.widgets.Select</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.NewsletterForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'content':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'publisher':</span> <span class="pre">&lt;django.forms.models.ModelChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'title':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.NewsletterForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#news.forms.NewsletterForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="news.forms.NewsletterForm.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#news.forms.NewsletterForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news.forms.</span></span><span class="sig-name descname"><span class="pre">ProfileEditForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">files=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_id='id_%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_class=&lt;class</span> <span class="pre">'django.forms.utils.ErrorList'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_suffix=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_permitted=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instance=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_required_attribute=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">renderer=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/news/forms.html#ProfileEditForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.ProfileEditForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form for users to update their profile information.</p>
+<p>Allows users to modify their username, email, profile image, contact number,
+and biographical information. Provides proper validation and Bootstrap styling.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../_modules/news/forms.html#ProfileEditForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.ProfileEditForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['username',</span> <span class="pre">'email',</span> <span class="pre">'profile_image',</span> <span class="pre">'contact_number',</span> <span class="pre">'bio']</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta.help_texts">
+<span class="sig-name descname"><span class="pre">help_texts</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bio':</span> <span class="pre">'Optional:</span> <span class="pre">Tell</span> <span class="pre">us</span> <span class="pre">a</span> <span class="pre">bit</span> <span class="pre">about</span> <span class="pre">yourself.'}</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.Meta.help_texts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bio':</span> <span class="pre">'Short</span> <span class="pre">Bio',</span> <span class="pre">'contact_number':</span> <span class="pre">'Contact</span> <span class="pre">Number',</span> <span class="pre">'profile_image':</span> <span class="pre">'Profile</span> <span class="pre">Photo'}</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#news.forms.ProfileEditForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="news.models.html#news.models.CustomUser" title="news.models.CustomUser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomUser</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bio':</span> <span class="pre">&lt;django.forms.widgets.Textarea</span> <span class="pre">object&gt;,</span> <span class="pre">'contact_number':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;django.forms.widgets.EmailInput</span> <span class="pre">object&gt;,</span> <span class="pre">'profile_image':</span> <span class="pre">&lt;django.forms.widgets.ClearableFileInput</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bio':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'contact_number':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;,</span> <span class="pre">'email':</span> <span class="pre">&lt;django.forms.fields.EmailField</span> <span class="pre">object&gt;,</span> <span class="pre">'profile_image':</span> <span class="pre">&lt;django.forms.fields.ImageField</span> <span class="pre">object&gt;,</span> <span class="pre">'username':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#news.forms.ProfileEditForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="news.forms.ProfileEditForm.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#news.forms.ProfileEditForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.PublisherForm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">news.forms.</span></span><span class="sig-name descname"><span class="pre">PublisherForm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/news/forms.html#PublisherForm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.PublisherForm" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelForm</span></code></p>
+<p>Form for creating and editing publisher organizations.</p>
+<p>Allows association of editors and journalists with publishers through
+multi-select fields. Automatically filters user choices based on appropriate roles.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="../_modules/news/forms.html#PublisherForm.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#news.forms.PublisherForm.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'editors',</span> <span class="pre">'journalists']</span></em><a class="headerlink" href="#news.forms.PublisherForm.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta.help_texts">
+<span class="sig-name descname"><span class="pre">help_texts</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'editors':</span> <span class="pre">'Hold</span> <span class="pre">Ctrl/Cmd</span> <span class="pre">to</span> <span class="pre">select</span> <span class="pre">multiple</span> <span class="pre">editors.',</span> <span class="pre">'journalists':</span> <span class="pre">'Hold</span> <span class="pre">Ctrl/Cmd</span> <span class="pre">to</span> <span class="pre">select</span> <span class="pre">multiple</span> <span class="pre">journalists.'}</span></em><a class="headerlink" href="#news.forms.PublisherForm.Meta.help_texts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta.labels">
+<span class="sig-name descname"><span class="pre">labels</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'editors':</span> <span class="pre">'Editors</span> <span class="pre">(users</span> <span class="pre">with</span> <span class="pre">edit/admin</span> <span class="pre">rights)',</span> <span class="pre">'journalists':</span> <span class="pre">'Journalists</span> <span class="pre">(users</span> <span class="pre">who</span> <span class="pre">can</span> <span class="pre">submit</span> <span class="pre">articles)',</span> <span class="pre">'name':</span> <span class="pre">'Publisher</span> <span class="pre">Name'}</span></em><a class="headerlink" href="#news.forms.PublisherForm.Meta.labels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#news.forms.PublisherForm.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="news.models.html#news.models.Publisher" title="news.models.Publisher"><code class="xref py py-class docutils literal notranslate"><span class="pre">Publisher</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.Meta.widgets">
+<span class="sig-name descname"><span class="pre">widgets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'editors':</span> <span class="pre">&lt;django.forms.widgets.SelectMultiple</span> <span class="pre">object&gt;,</span> <span class="pre">'journalists':</span> <span class="pre">&lt;django.forms.widgets.SelectMultiple</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.widgets.TextInput</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.PublisherForm.Meta.widgets" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.base_fields">
+<span class="sig-name descname"><span class="pre">base_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'editors':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'journalists':</span> <span class="pre">&lt;django.forms.models.ModelMultipleChoiceField</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;django.forms.fields.CharField</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#news.forms.PublisherForm.base_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.declared_fields">
+<span class="sig-name descname"><span class="pre">declared_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#news.forms.PublisherForm.declared_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="news.forms.PublisherForm.media">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">media</span></span><a class="headerlink" href="#news.forms.PublisherForm.media" title="Link to this definition"></a></dt>
+<dd><p>Return all media required to render the widgets on this form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="news.views.html" class="btn btn-neutral float-left" title="News Views" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="news.admin.html" class="btn btn-neutral float-right" title="News Admin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Developer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

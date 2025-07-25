@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>news.forms &mdash; Django News Portal 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Django News Portal
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/news.models.html">News Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/news.views.html">News Views</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/news.forms.html">News Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/news.admin.html">News Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/news.api.html">News API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Django News Portal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">news.forms</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for news.forms</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Django News Portal Forms</span>
+
+<span class="sd">This module contains all the form classes for the news portal application.</span>
+<span class="sd">It includes forms for user registration, profile editing, article submission,</span>
+<span class="sd">publisher management, and newsletter creation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserCreationForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Article</span><span class="p">,</span> <span class="n">CustomUser</span><span class="p">,</span> <span class="n">Publisher</span><span class="p">,</span> <span class="n">Newsletter</span>
+
+<div class="viewcode-block" id="ArticleForm">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.ArticleForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ArticleForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for journalists to submit or edit news articles.</span>
+<span class="sd">    </span>
+<span class="sd">    Includes fields for title, content, publisher association, and optional image upload.</span>
+<span class="sd">    Styled with Bootstrap CSS classes for consistent appearance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ArticleForm.Meta">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.ArticleForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Article</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;publisher&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">,</span> <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}),</span>
+            <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-select&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">ClearableFileInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+        <span class="p">}</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Headline&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Article Body&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;publisher&quot;</span><span class="p">:</span> <span class="s2">&quot;Publisher Organization&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;Article Image (optional)&quot;</span>
+        <span class="p">}</span></div>
+</div>
+
+
+<div class="viewcode-block" id="CustomUserSignupForm">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.CustomUserSignupForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomUserSignupForm</span><span class="p">(</span><span class="n">UserCreationForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    User registration form supporting multiple user roles.</span>
+<span class="sd">    </span>
+<span class="sd">    Extends Django&#39;s UserCreationForm to include role selection and email field.</span>
+<span class="sd">    Supports registration for readers, editors, journalists, and publishers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CustomUserSignupForm.Meta">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.CustomUserSignupForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span><span class="p">,</span> <span class="s2">&quot;password1&quot;</span><span class="p">,</span> <span class="s2">&quot;password2&quot;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-select&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;password1&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">PasswordInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;password2&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">PasswordInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+        <span class="p">}</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Type&quot;</span>
+        <span class="p">}</span>
+        <span class="n">help_texts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;Choose your role: Reader, Editor, Journalist, or Publisher.&quot;</span>
+        <span class="p">}</span></div>
+</div>
+
+
+<div class="viewcode-block" id="ProfileEditForm">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.ProfileEditForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProfileEditForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for users to update their profile information.</span>
+<span class="sd">    </span>
+<span class="sd">    Allows users to modify their username, email, profile image, contact number,</span>
+<span class="sd">    and biographical information. Provides proper validation and Bootstrap styling.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ProfileEditForm.Meta">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.ProfileEditForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">CustomUser</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;profile_image&quot;</span><span class="p">,</span> <span class="s2">&quot;contact_number&quot;</span><span class="p">,</span> <span class="s2">&quot;bio&quot;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;profile_image&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">ClearableFileInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;contact_number&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">}),</span>
+            <span class="s2">&quot;bio&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;form-control&quot;</span><span class="p">,</span> <span class="s2">&quot;rows&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}),</span>
+        <span class="p">}</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;profile_image&quot;</span><span class="p">:</span> <span class="s2">&quot;Profile Photo&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;contact_number&quot;</span><span class="p">:</span> <span class="s2">&quot;Contact Number&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bio&quot;</span><span class="p">:</span> <span class="s2">&quot;Short Bio&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">help_texts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;bio&quot;</span><span class="p">:</span> <span class="s2">&quot;Optional: Tell us a bit about yourself.&quot;</span><span class="p">,</span>
+        <span class="p">}</span></div>
+</div>
+
+
+<div class="viewcode-block" id="PublisherForm">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.PublisherForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PublisherForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for creating and editing publisher organizations.</span>
+<span class="sd">    </span>
+<span class="sd">    Allows association of editors and journalists with publishers through</span>
+<span class="sd">    multi-select fields. Automatically filters user choices based on appropriate roles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PublisherForm.Meta">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.PublisherForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Publisher</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;editors&#39;</span><span class="p">,</span> <span class="s1">&#39;journalists&#39;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">}),</span>
+            <span class="s1">&#39;editors&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectMultiple</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-select&#39;</span><span class="p">}),</span>
+            <span class="s1">&#39;journalists&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectMultiple</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-select&#39;</span><span class="p">}),</span>
+        <span class="p">}</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Publisher Name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;editors&quot;</span><span class="p">:</span> <span class="s2">&quot;Editors (users with edit/admin rights)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;journalists&quot;</span><span class="p">:</span> <span class="s2">&quot;Journalists (users who can submit articles)&quot;</span>
+        <span class="p">}</span>
+        <span class="n">help_texts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;editors&quot;</span><span class="p">:</span> <span class="s2">&quot;Hold Ctrl/Cmd to select multiple editors.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;journalists&quot;</span><span class="p">:</span> <span class="s2">&quot;Hold Ctrl/Cmd to select multiple journalists.&quot;</span>
+        <span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the form with role-based user filtering.</span>
+<span class="sd">        </span>
+<span class="sd">        Limits editor choices to users with editor/publisher roles and</span>
+<span class="sd">        journalist choices to users with journalist role.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Limit choices to users of appropriate roles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;editors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role__in</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;editor&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;journalists&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">CustomUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s1">&#39;journalist&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="NewsletterForm">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.NewsletterForm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NewsletterForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Form for journalists to create and submit newsletters.</span>
+<span class="sd">    </span>
+<span class="sd">    Provides fields for newsletter title, content, and optional publisher association.</span>
+<span class="sd">    Automatically filters publisher choices based on the user&#39;s associations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="NewsletterForm.Meta">
+<a class="viewcode-back" href="../../modules/news.forms.html#news.forms.NewsletterForm.Meta">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Newsletter</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;publisher&#39;</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">TextInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">}),</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">,</span> <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}),</span>
+            <span class="s1">&#39;publisher&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;form-control&#39;</span><span class="p">}),</span>
+        <span class="p">}</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Newsletter Title&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Newsletter Body&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;publisher&#39;</span><span class="p">:</span> <span class="s1">&#39;Publisher (Optional)&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">help_texts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s1">&#39;Write the full newsletter content here.&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;publisher&#39;</span><span class="p">:</span> <span class="s1">&#39;Select a publisher to associate with this newsletter (optional).&#39;</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the form with user-specific publisher filtering.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            user: The current user, used to filter available publishers</span>
+<span class="sd">            </span>
+<span class="sd">        Limits publisher choices to those associated with the user if applicable,</span>
+<span class="sd">        otherwise shows all publishers. Makes publisher field optional.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        <span class="c1"># Limit publisher choices based on the user&#39;s associations</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s1">&#39;journalist_of_publishers&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">journalist_of_publishers</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">queryset</span> <span class="o">=</span> <span class="n">Publisher</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        
+        <span class="c1"># Make publisher field optional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s1">&#39;publisher&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Developer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
