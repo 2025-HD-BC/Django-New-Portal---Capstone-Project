@@ -8,26 +8,26 @@ class Command(BaseCommand):
     help = "Create Reader, Editor, Journalist groups and attach model permissions."
 
     def handle(self, *args, **kwargs):
-        # ---- permission codenames we need -------------
+        # Permission codenames we need
         article_perms    = ['add_article', 'view_article',
                             'change_article', 'delete_article']
         newsletter_perms = ['add_newsletter', 'view_newsletter',
                             'change_newsletter', 'delete_newsletter']
 
-        # ---- helper to fetch Permission objects -------
+        # Helper to fetch Permission objects
         def perms(codenames):
             return Permission.objects.filter(codename__in=codenames)
 
-        # -------- Reader -------------------------------
+        # Reader group
         reader, _ = Group.objects.get_or_create(name='reader')
         reader.permissions.set(perms(['view_article', 'view_newsletter']))
 
-        # -------- Editor -------------------------------
+        # Editor group
         editor, _ = Group.objects.get_or_create(name='editor')
         editor.permissions.set(perms(article_perms + newsletter_perms))
 
-        # -------- Journalist ---------------------------
+        # Journalist group
         journalist, _ = Group.objects.get_or_create(name='journalist')
         journalist.permissions.set(perms(article_perms + newsletter_perms))
 
-        self.stdout.write(self.style.SUCCESS("✅  Groups and permissions seeded successfully"))
+        self.stdout.write(self.style.SUCCESS("Groups and permissions seeded successfully"))

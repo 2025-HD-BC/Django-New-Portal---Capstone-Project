@@ -126,4 +126,3 @@ Your API includes comprehensive unit tests in `news/api/tests.py`:
 4. Validate permission controls
 5. Document any issues found
 
-Your API is production-ready and meets all requirements from task.txt!

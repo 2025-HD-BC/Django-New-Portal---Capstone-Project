@@ -7,7 +7,7 @@ from django.contrib.messages import constants as msg
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# 🔐 SECURITY
+# SECURITY CONFIGURATION
 SECRET_KEY = config("SECRET_KEY", default="insecure-secret-key")
 DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config(
@@ -17,7 +17,7 @@ ALLOWED_HOSTS = config(
 )
 
 
-# 📦 INSTALLED APPS
+# INSTALLED APPLICATIONS
 INSTALLED_APPS = [
     # Django contrib apps
     "django.contrib.admin",
@@ -36,7 +36,8 @@ INSTALLED_APPS = [
 ]
 
 
-# 🧩 MIDDLEWARE
+# MIDDLEWARE CONFIGURATION
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -48,11 +49,11 @@ MIDDLEWARE = [
 ]
 
 
-# 🔗 URL CONF
+# URL CONFIGURATION
 ROOT_URLCONF = "news_app.urls"
 
 
-# 🧠 TEMPLATES
+# TEMPLATE CONFIGURATION
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -72,11 +73,11 @@ TEMPLATES = [
 ]
 
 
-# 🗄️ WSGI
+# WSGI APPLICATION
 WSGI_APPLICATION = "news_app.wsgi.application"
 
 
-# 🗄️ DATABASE (SQLite for development, MariaDB for production)
+# DATABASE CONFIGURATION (SQLite for development, MariaDB for production)
 # Check if MariaDB credentials are provided, otherwise use SQLite
 if config("MARIADB_DB", default=""):
     DATABASES = {
@@ -102,11 +103,11 @@ else:
     }
 
 
-# 👤 CUSTOM USER
+# CUSTOM USER MODEL
 AUTH_USER_MODEL = "news.CustomUser"
 
 
-# 🔒 PASSWORD VALIDATORS
+# PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
@@ -123,14 +124,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# 🌍 INTERNATIONALIZATION
+# INTERNATIONALIZATION & LOCALIZATION
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 
-# 📁 STATIC & MEDIA
+# STATIC FILES & MEDIA CONFIGURATION
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",   # for your CSS/JS/images during development
@@ -141,7 +142,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 
-# 🧠 MESSAGE TAGS (for styling in your templates)
+# DJANGO MESSAGES FRAMEWORK (for styling in templates)
 MESSAGE_TAGS = {
     msg.DEBUG: "debug",
     msg.INFO: "info",
@@ -151,11 +152,11 @@ MESSAGE_TAGS = {
 }
 
 
-# 🔮 DEFAULT AUTO FIELD
+# DEFAULT AUTO FIELD CONFIGURATION
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# 🧰 DJANGO REST FRAMEWORK
+# DJANGO REST FRAMEWORK CONFIGURATION
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticatedOrReadOnly",
@@ -173,23 +174,32 @@ REST_FRAMEWORK = {
 }
 
 
-# 📧 EMAIL SETTINGS
-EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+# EMAIL CONFIGURATION
+EMAIL_BACKEND = config(
+    "EMAIL_BACKEND", 
+    default="django.core.mail.backends.smtp.EmailBackend"
+)
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=config("EMAIL_HOST_USER", default="noreply@newsportal.com"))
-SERVER_EMAIL = config("SERVER_EMAIL", default=config("EMAIL_HOST_USER", default="noreply@newsportal.com"))
+DEFAULT_FROM_EMAIL = config(
+    "DEFAULT_FROM_EMAIL", 
+    default=config("EMAIL_HOST_USER", default="noreply@newsportal.com")
+)
+SERVER_EMAIL = config(
+    "SERVER_EMAIL", 
+    default=config("EMAIL_HOST_USER", default="noreply@newsportal.com")
+)
 
 # Password reset settings
 PASSWORD_RESET_TIMEOUT = 3600  # 1 hour in seconds
 
-# 🌐 DOMAIN SETTINGS
+# DOMAIN & SITE CONFIGURATION
 DOMAIN = config("DOMAIN", default="localhost:8000")
 
-# 🐦 X (TWITTER) API SETTINGS
+# TWITTER/X API CONFIGURATION
 # OAuth 1.0a credentials for posting tweets
 X_API_KEY = config("X_API_KEY", default="")
 X_API_SECRET = config("X_API_SECRET", default="")

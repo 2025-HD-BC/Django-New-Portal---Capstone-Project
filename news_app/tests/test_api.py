@@ -32,7 +32,7 @@ class APIMixins:
         return client
 
 
-# ---------- LIST / DETAIL ---------- #
+# LIST / DETAIL TESTS
 class ArticleListDetailTests(APIMixins, APITestCase):
     def setUp(self):
         self.reader = self._create_user("reader", "reader")
@@ -59,7 +59,7 @@ class ArticleListDetailTests(APIMixins, APITestCase):
         self.assertEqual(res.data["id"], self.article.pk)
 
 
-# ---------- APPROVAL ---------- #
+# APPROVAL TESTS
 class ArticleApprovalTests(APIMixins, APITestCase):
     def setUp(self):
         self.editor = self._create_user("ed", "editor", is_staff=True)
@@ -88,7 +88,7 @@ class ArticleApprovalTests(APIMixins, APITestCase):
         self.assertFalse(self.article.is_approved)
 
 
-# ---------- SUBSCRIPTION FEED ---------- #
+# SUBSCRIPTION FEED TESTS
 class SubscriptionFeedTests(APIMixins, APITestCase):
     def setUp(self):
         self.reader = self._create_user("subby", "reader")

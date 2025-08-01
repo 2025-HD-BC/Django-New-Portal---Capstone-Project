@@ -19,11 +19,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from .models import Article, Publisher, CustomUser, Newsletter
 from .forms import (
-    ArticleForm, CustomUserSignupForm, ProfileEditForm, PublisherForm, NewsletterForm
+    ArticleForm, 
+    CustomUserSignupForm, 
+    ProfileEditForm, 
+    PublisherForm, 
+    NewsletterForm
 )
 from .constants import UserRoles, ArticleStatus, Pagination
 
-# --- ROLE TEST HELPERS ---
+# ROLE-BASED HELPER FUNCTIONS
+
 def is_editor(user):
     """
     Check if a user has editor privileges.
@@ -34,7 +39,9 @@ def is_editor(user):
     Returns:
         bool: True if user is an editor, False otherwise
     """
-    return user.is_authenticated and (user.role == UserRoles.EDITOR or user.groups.filter(name=UserRoles.EDITOR).exists())
+    return (user.is_authenticated and 
+            (user.role == UserRoles.EDITOR or 
+             user.groups.filter(name=UserRoles.EDITOR).exists()))
 
 def is_journalist(user):
     """
@@ -46,7 +53,9 @@ def is_journalist(user):
     Returns:
         bool: True if user is a journalist, False otherwise
     """
-    return user.is_authenticated and (user.role == UserRoles.JOURNALIST or user.groups.filter(name=UserRoles.JOURNALIST).exists())
+    return (user.is_authenticated and 
+            (user.role == UserRoles.JOURNALIST or 
+             user.groups.filter(name=UserRoles.JOURNALIST).exists()))
 
 def is_reader(user):
     """
@@ -58,7 +67,9 @@ def is_reader(user):
     Returns:
         bool: True if user is a reader, False otherwise
     """
-    return user.is_authenticated and (user.role == UserRoles.READER or user.groups.filter(name=UserRoles.READER).exists())
+    return (user.is_authenticated and 
+            (user.role == UserRoles.READER or 
+             user.groups.filter(name=UserRoles.READER).exists()))
 
 def is_publisher(user):
     """
@@ -70,9 +81,12 @@ def is_publisher(user):
     Returns:
         bool: True if user is a publisher, False otherwise
     """
-    return user.is_authenticated and (user.role == UserRoles.PUBLISHER or user.groups.filter(name=UserRoles.PUBLISHER).exists())
+    return (user.is_authenticated and 
+            (user.role == UserRoles.PUBLISHER or 
+             user.groups.filter(name=UserRoles.PUBLISHER).exists()))
 
-# --- HOME / PUBLIC ARTICLES ---
+# PUBLIC VIEWS - HOME & ARTICLE DISPLAY
+
 def home(request):
     """
     Display the homepage with approved articles.
@@ -86,7 +100,7 @@ def home(request):
     articles = Article.objects.filter(status=ArticleStatus.APPROVED)
     return render(request, "news/article_list.html", {"articles": articles})
 
-# --- USER PROFILE ---
+# USER PROFILE MANAGEMENT
 @login_required
 def profile_view(request):
     """
@@ -123,7 +137,7 @@ def profile_edit(request):
         form = ProfileEditForm(instance=user)
     return render(request, "news/profile_edit.html", {"form": form})
 
-# --- DASHBOARD (ROLE BASED) ---
+# ROLE-BASED DASHBOARD VIEWS
 @login_required
 def dashboard(request):
     """
@@ -209,7 +223,7 @@ def _get_publisher_dashboard_context(user):
         "publisher_articles": Article.objects.filter(publisher__in=my_publishers),
     }
 
-# --- ARTICLE CRUD & MODERATION ---
+# ARTICLE CRUD OPERATIONS & EDITORIAL WORKFLOW
 @login_required
 def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
@@ -220,7 +234,9 @@ def article_detail(request, pk):
         or (user == article.author)
     )
     if article.status != ArticleStatus.APPROVED and not can_view_unapproved:
-        raise PermissionDenied("You do not have permission to view this article.")
+        raise PermissionDenied(
+            "You do not have permission to view this article."
+        )
     return render(request, "news/article_detail.html", {"article": article})
 
 @login_required
@@ -255,10 +271,16 @@ def article_approve(request, pk):
         messages.warning(request, "Article is already approved.")
         return redirect("dashboard")
     elif article.status == ArticleStatus.REJECTED:
-        messages.warning(request, "Article was previously rejected. Cannot approve rejected article.")
+        messages.warning(
+            request, 
+            "Article was previously rejected. Cannot approve rejected article."
+        )
         return redirect("dashboard")
     elif article.status != ArticleStatus.PENDING:
-        messages.error(request, f"Article status is '{article.status}'. Can only approve pending articles.")
+        messages.error(
+            request, 
+            f"Article status is '{article.status}'. Can only approve pending articles."
+        )
         return redirect("dashboard")
     
     if request.method == "POST":
@@ -282,10 +304,16 @@ def article_reject(request, pk):
         messages.warning(request, "Article is already rejected.")
         return redirect("dashboard")
     elif article.status == ArticleStatus.APPROVED:
-        messages.warning(request, "Article was previously approved. Cannot reject approved article.")
+        messages.warning(
+            request, 
+            "Article was previously approved. Cannot reject approved article."
+        )
         return redirect("dashboard")
     elif article.status != ArticleStatus.PENDING:
-        messages.error(request, f"Article status is '{article.status}'. Can only reject pending articles.")
+        messages.error(
+            request, 
+            f"Article status is '{article.status}'. Can only reject pending articles."
+        )
         return redirect("dashboard")
     
     if request.method == "POST":
@@ -312,7 +340,7 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return article.status == ArticleStatus.PENDING
         return False
 
-# --- READER SUBSCRIPTIONS ---
+# READER SUBSCRIPTION MANAGEMENT
 @login_required
 @user_passes_test(is_reader)
 def subscribe_publisher(request, publisher_id):
@@ -357,7 +385,7 @@ def subscriptions_view(request):
     }
     return render(request, "news/subscriptions.html", context)
 
-# --- USER SIGNUP / LOGIN / LOGOUT ---
+# USER AUTHENTICATION - REGISTRATION & LOGIN
 def signup(request):
     if request.method == "POST":
         form = CustomUserSignupForm(request.POST)
@@ -380,7 +408,7 @@ class MyLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
     next_page = '/'  # Redirect to home page after logout
 
-    # --- PUBLISHER MANAGEMENT ---
+    # PUBLISHER MANAGEMENT OPERATIONS
 
 @login_required
 @user_passes_test(is_publisher)
@@ -445,10 +473,10 @@ def publisher_delete(request, pk):
         publisher.delete()
         messages.success(request, "Publisher deleted.")
         return redirect("publisher_list")
-    return render(request, "news/publisher_confirm_delete.html", {"publisher": publisher})
+    return render(request, "news/publisher_delete.html", {"publisher": publisher})
 
 
-# --- NEWSLETTER CRUD ---
+# NEWSLETTER MANAGEMENT
 @login_required
 @user_passes_test(is_journalist)
 def newsletter_create(request):
@@ -543,7 +571,7 @@ def newsletter_edit(request, pk):
     return render(request, "news/newsletter_form.html", {"form": form, "newsletter": newsletter})
 
 
-# --- CUSTOM ERROR HANDLERS ---
+# CUSTOM ERROR HANDLERS
 def custom_403(request, exception):
     """Custom 403 error handler"""
     return render(request, "403.html", status=403)
@@ -559,7 +587,7 @@ def custom_500(request):
     return render(request, "500.html", status=500)
 
 
-# --- ERROR TESTING VIEWS (DEVELOPMENT ONLY) ---
+# ERROR TESTING VIEWS (DEVELOPMENT ONLY)
 def template_test(request):
     """View to test template loading"""
     return render(request, "news/template_test.html")

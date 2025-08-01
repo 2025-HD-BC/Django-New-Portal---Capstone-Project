@@ -11,9 +11,7 @@ from decouple import config
 from .models import Article, Newsletter, CustomUser
 
 
-# ──────────────────────────────────────────────
-# 1.  Add / move users to the correct role group
-# ──────────────────────────────────────────────
+# 1. Add / move users to the correct role group
 @receiver(post_save, sender=CustomUser)
 def assign_user_group(sender, instance, created, **kwargs):
     if kwargs.get("raw", False):
@@ -31,9 +29,7 @@ def assign_user_group(sender, instance, created, **kwargs):
         instance.groups.add(grp)
 
 
-# ──────────────────────────────────────────────
-# 2.  Helper utilities
-# ──────────────────────────────────────────────
+# 2. Helper utilities
 def _subscriber_emails(publisher, journalist):
     """
     Collect a set of reader e‑mail addresses for a given publisher / journalist
@@ -60,7 +56,7 @@ def _send_notification(recipients, subject, message):
     if not recipients:
         return
 
-    # ---- ONE‑LINE FIX FOR THE UNICODE / idna BUG ----
+    # One-line fix for the Unicode/idna bug
     if not getattr(DNS_NAME, "_fqdn", ""):
         DNS_NAME._fqdn = "localhost"
 
@@ -124,7 +120,7 @@ def _post_to_x_twitter(content, article_link=None, image_path=None):
                         media_data = media_response.json()
                         media_id = media_data.get('media_id_string')
                         if settings.DEBUG:
-                            print(f"[SIGNAL] ✅ Successfully uploaded media (ID: {media_id})")
+                            print(f"[SIGNAL] Successfully uploaded media (ID: {media_id})")
                     else:
                         if settings.DEBUG:
                             print(f"[SIGNAL] ⚠️ Failed to upload media: {media_response.status_code} - {media_response.text}")
@@ -172,21 +168,20 @@ def _post_to_x_twitter(content, article_link=None, image_path=None):
             tweet_id = tweet_data.get('data', {}).get('id', 'unknown')
             media_info = " with image" if media_id else ""
             if settings.DEBUG:
-                print(f"[SIGNAL] ✅ Successfully posted to X (Tweet ID: {tweet_id}){media_info}: {tweet_text[:50]}...")
+                print(f"[SIGNAL] Successfully posted to X (Tweet ID: {tweet_id}){media_info}: {tweet_text[:50]}...")
             return True
         else:
             error_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
             if settings.DEBUG:
-                print(f"[SIGNAL] ❌ Failed to post to X. Status: {response.status_code}, Error: {error_data}")
+                print(f"[SIGNAL] Failed to post to X. Status: {response.status_code}, Error: {error_data}")
             return False
             
     except Exception as e:
         if settings.DEBUG:
-            print(f"[SIGNAL] ❌ Error posting to X: {e}")
+            print(f"[SIGNAL] Error posting to X: {e}")
         return False
-# ──────────────────────────────────────────────
-# 3.  Article approval → inform subscribers
-# ──────────────────────────────────────────────
+
+# 3. Article approval → inform subscribers
 @receiver(post_save, sender=Article)
 def notify_article_approval(sender, instance, created, **kwargs):
     if kwargs.get("raw", False) or created or instance.status != Article.STATUS_APPROVED:
@@ -223,9 +218,7 @@ def notify_article_approval(sender, instance, created, **kwargs):
     _post_to_x_twitter(tweet_content, link, image_path)
 
 
-# ──────────────────────────────────────────────
-# 4.  Newsletter approval → inform subscribers
-# ──────────────────────────────────────────────
+# 4. Newsletter approval → inform subscribers
 @receiver(post_save, sender=Newsletter)
 def notify_newsletter_approval(sender, instance, created, **kwargs):
     if kwargs.get("raw", False) or created or not instance.approved:

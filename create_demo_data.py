@@ -30,7 +30,7 @@ def create_demo_data():
             password="demo123",
             role="reader"
         )
-        print(f"✅ Created reader: {reader.username}")
+        print(f"Created reader: {reader.username}")
         
         # Journalist
         journalist = CustomUser.objects.create_user(
@@ -39,7 +39,7 @@ def create_demo_data():
             password="demo123",
             role="journalist"
         )
-        print(f"✅ Created journalist: {journalist.username}")
+        print(f"Created journalist: {journalist.username}")
         
         # Editor
         editor = CustomUser.objects.create_user(
@@ -48,7 +48,7 @@ def create_demo_data():
             password="demo123",
             role="editor"
         )
-        print(f"✅ Created editor: {editor.username}")
+        print(f"Created editor: {editor.username}")
         
         # Publisher
         publisher_user = CustomUser.objects.create_user(
@@ -57,7 +57,7 @@ def create_demo_data():
             password="demo123",
             role="publisher"
         )
-        print(f"✅ Created publisher user: {publisher_user.username}")
+        print(f"Created publisher user: {publisher_user.username}")
         
         # Create publisher organization
         publisher_org = Publisher.objects.create(
@@ -65,7 +65,7 @@ def create_demo_data():
         )
         publisher_org.editors.add(editor)
         publisher_org.journalists.add(journalist)
-        print(f"✅ Created publisher organization: {publisher_org.name}")
+        print(f"Created publisher organization: {publisher_org.name}")
         
         # Create sample article
         article = Article.objects.create(
@@ -94,7 +94,7 @@ def create_demo_data():
             publisher=publisher_org,
             status=Article.STATUS_PENDING
         )
-        print(f"✅ Created sample article: {article.title}")
+        print(f"Created sample article: {article.title}")
         
         # Create sample newsletter
         newsletter = Newsletter.objects.create(
@@ -121,28 +121,28 @@ def create_demo_data():
             publisher=publisher_org,
             approved=False
         )
-        print(f"✅ Created sample newsletter: {newsletter.title}")
+        print(f"Created sample newsletter: {newsletter.title}")
         
         # Set up reader subscription
         reader.subscriptions_publishers.add(publisher_org)
         reader.subscriptions_journalists.add(journalist)
-        print(f"✅ Set up subscriptions for {reader.username}")
+        print(f"Set up subscriptions for {reader.username}")
         
-        print("\n🎉 Demo data created successfully!")
+        print("\nDemo data created successfully!")
         print("\nLogin credentials:")
         print("Reader: demo_reader / demo123")
         print("Journalist: demo_journalist / demo123")
         print("Editor: demo_editor / demo123")
         print("Publisher: demo_publisher / demo123")
         
-        print("\n📝 Next steps:")
+        print("\nNext steps:")
         print("1. Login as editor and approve the pending article")
         print("2. Login as reader to see the approved content")
         print("3. Test the API endpoints with the provided credentials")
         print("4. Check email notifications in the console")
         
     except Exception as e:
-        print(f"❌ Error creating demo data: {e}")
+        print(f"Error creating demo data: {e}")
 
 
 def cleanup_demo_data():
@@ -153,9 +153,9 @@ def cleanup_demo_data():
         Publisher.objects.filter(name__contains="Demo").delete()
         Article.objects.filter(title__contains="Django News App").delete()
         Newsletter.objects.filter(title__contains="Welcome to Our").delete()
-        print("✅ Demo data cleaned up successfully!")
+        print("Demo data cleaned up successfully!")
     except Exception as e:
-        print(f"❌ Error cleaning up demo data: {e}")
+        print(f"Error cleaning up demo data: {e}")
 
 
 if __name__ == "__main__":

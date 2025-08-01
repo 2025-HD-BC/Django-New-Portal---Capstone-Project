@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = 'Test X/Twitter API integration'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS('🐦 Testing X/Twitter API Integration'))
+        self.stdout.write(self.style.SUCCESS('Testing X/Twitter API Integration'))
         
         # Check if credentials are configured
         api_key = config("X_API_KEY", default="")
@@ -31,10 +31,12 @@ class Command(BaseCommand):
             missing_creds.append("X_ACCESS_TOKEN_SECRET")
             
         if missing_creds:
-            self.stdout.write(self.style.ERROR(f'❌ Missing credentials: {", ".join(missing_creds)}'))
+            self.stdout.write(self.style.ERROR(
+                f'Missing credentials: {", ".join(missing_creds)}'
+            ))
             return
             
-        self.stdout.write('✅ API credentials found')
+        self.stdout.write('API credentials found')
         
         # Test API connection using OAuth 1.0a
         try:
@@ -59,13 +61,16 @@ class Command(BaseCommand):
                 user_data = response.json()
                 username = user_data.get('screen_name', 'unknown')
                 user_id = user_data.get('id_str', 'unknown')
-                self.stdout.write(self.style.SUCCESS(f'✅ API connection successful! Connected as: @{username} (ID: {user_id})'))
+                self.stdout.write(self.style.SUCCESS(
+                    f'API connection successful! Connected as: @{username} '
+                    f'(ID: {user_id})'
+                ))
                 
                 # Test posting a tweet (optional)
                 post_test = input('Do you want to test posting a tweet? (y/N): ').lower()
                 if post_test == 'y':
                     test_tweet = {
-                        'text': '🧪 Testing Django News App X/Twitter integration! 🚀 #Django #NewsApp #Test'
+                        'text': 'Testing Django News App X/Twitter integration! #Django #NewsApp #Test'
                     }
                     
                     post_response = requests.post(
@@ -79,20 +84,32 @@ class Command(BaseCommand):
                     if post_response.status_code == 201:
                         tweet_data = post_response.json()
                         tweet_id = tweet_data.get('data', {}).get('id', 'unknown')
-                        self.stdout.write(self.style.SUCCESS(f'✅ Test tweet posted successfully! Tweet ID: {tweet_id}'))
+                        self.stdout.write(self.style.SUCCESS(
+                            f'Test tweet posted successfully! Tweet ID: {tweet_id}'
+                        ))
                     else:
-                        error_data = post_response.json() if post_response.headers.get('content-type', '').startswith('application/json') else post_response.text
-                        self.stdout.write(self.style.ERROR(f'❌ Failed to post test tweet: {error_data}'))
+                        error_data = (post_response.json() 
+                                    if post_response.headers.get('content-type', '')
+                                    .startswith('application/json') 
+                                    else post_response.text)
+                        self.stdout.write(self.style.ERROR(
+                            f'Failed to post test tweet: {error_data}'
+                        ))
                 
             else:
-                error_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                self.stdout.write(self.style.ERROR(f'❌ API connection failed. Status: {response.status_code}'))
+                error_data = (response.json() 
+                            if response.headers.get('content-type', '')
+                            .startswith('application/json') 
+                            else response.text)
+                self.stdout.write(self.style.ERROR(
+                    f'API connection failed. Status: {response.status_code}'
+                ))
                 self.stdout.write(self.style.ERROR(f'Error: {error_data}'))
                 
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f'❌ Connection error: {e}'))
+            self.stdout.write(self.style.ERROR(f'Connection error: {e}'))
             
-        self.stdout.write('\n📝 X/Twitter API Setup Requirements:')
+        self.stdout.write('\nX/Twitter API Setup Requirements:')
         self.stdout.write('1. Go to https://developer.twitter.com/en/portal/dashboard')
         self.stdout.write('2. Create a new app or use existing one')
         self.stdout.write('3. Set up OAuth 1.0a permissions (Read and Write)')
@@ -102,4 +119,4 @@ class Command(BaseCommand):
         self.stdout.write('   X_API_SECRET=your_api_secret_here')
         self.stdout.write('   X_ACCESS_TOKEN=your_access_token_here')
         self.stdout.write('   X_ACCESS_TOKEN_SECRET=your_access_token_secret_here')
-        self.stdout.write('\n🔐 Important: Your app must have "Read and Write" permissions!')
+        self.stdout.write('\nImportant: Your app must have "Read and Write" permissions!')

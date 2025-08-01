@@ -1,4 +1,11 @@
-# news/api/views.py
+"""
+Django News Portal API Views
+
+This module contains all the REST API views for the news portal application.
+It provides comprehensive API endpoints for articles, publishers, users, and newsletters
+with proper authentication, permissions, and role-based access control.
+"""
+
 from django.utils import timezone
 from rest_framework import permissions, viewsets, generics, status, exceptions
 from rest_framework.views import APIView
@@ -11,7 +18,7 @@ from news.models import (
     Publisher,
     CustomUser,
     Newsletter,
-    Subscription,          # ← NEW import
+    Subscription,
 )
 from news.constants import UserRoles, ArticleStatus
 from .serializers import (
@@ -21,22 +28,46 @@ from .serializers import (
     NewsletterSerializer,
 )
 
-# ────────────────────────────────────────────────────────────────
-#  EXTRA ENDPOINTS REQUIRED BY THE TEST SUITE
-# ────────────────────────────────────────────────────────────────
+# ARTICLE MANAGEMENT API ENDPOINTS
 class ArticleApproveView(APIView):
     """
+    API endpoint for editors to approve pending articles.
+    
     POST /api/articles/<pk>/approve/
-    Editors only – set status to APPROVED and return the article.
+    
+    This endpoint allows editors to approve articles by changing their status
+    from PENDING to APPROVED. Only authenticated users with editor role can
+    access this endpoint.
+    
+    Args:
+        pk (int): The primary key of the article to approve
+        
+    Returns:
+        Response: Serialized article data with updated status
+        
+    Raises:
+        404: If article with given pk does not exist
+        403: If user does not have editor privileges
     """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
+        """
+        Approve an article by setting its status to APPROVED.
+        
+        Args:
+            request: The HTTP request object
+            pk (int): Article primary key
+            
+        Returns:
+            Response: JSON response with article data or error message
+        """
         try:
             article = Article.objects.get(pk=pk)
         except Article.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
+        # Check if user has editor privileges
         if getattr(request.user, "role", None) != "editor":
             return Response({"detail": "Only editors can approve."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -49,41 +80,81 @@ class ArticleApproveView(APIView):
 
 class SubscriptionFeedView(generics.ListAPIView):
     """
+    API endpoint to retrieve subscription feed for authenticated readers.
+    
     GET /api/subscriptions/feed/
-    Return approved articles from publishers and journalists
-    the authenticated reader follows.
+    
+    Returns approved articles from publishers and journalists that the
+    authenticated reader follows. Only accessible to users with 'reader' role.
+    
+    Returns:
+        Response: List of approved articles from subscribed sources
+        
+    Raises:
+        403: If user is not a reader or not authenticated
     """
     serializer_class = ArticleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        """
+        Filter articles based on user's subscriptions.
+        
+        Returns approved articles from:
+        1. Publishers the user subscribes to via Subscription model
+        2. Journalists the user follows via M2M relationship
+        
+        Returns:
+            QuerySet: Filtered and ordered article queryset
+        """
         user = self.request.user
+        
+        # Only readers can access subscription feed
         if getattr(user, "role", None) != "reader":
             return Article.objects.none()
 
-        # Publisher IDs via Subscription model
+        # Get publisher IDs from Subscription model
         pub_ids = Subscription.objects.filter(reader=user).values_list(
             "publisher_id", flat=True
         )
-        # Journalist IDs via the existing M2M (if any)
+        # Get journalist IDs from existing M2M relationship
         jour_ids = user.subscriptions_journalists.values_list("id", flat=True)
 
+        # Combine articles from subscribed publishers and journalists
         qs = (
             Article.objects.filter(status=ArticleStatus.APPROVED, publisher_id__in=pub_ids)
             | Article.objects.filter(status=ArticleStatus.APPROVED, author_id__in=jour_ids)
         )
         return qs.distinct().order_by("-created_at")
 
-# ────────────────────────────────────────────────────────────────
-#  EXISTING FEED‑STYLE FUNCTION VIEWS
-# ────────────────────────────────────────────────────────────────
+# LEGACY FEED ENDPOINTS (Function-Based Views)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def api_subscribed_articles(request):
+    """
+    Legacy API endpoint for retrieving subscribed articles.
+    
+    GET /api/subscribed-articles/
+    
+    Function-based view that returns articles from publishers the authenticated
+    reader subscribes to. This endpoint maintains backward compatibility.
+    
+    Args:
+        request: HTTP request object with authenticated user
+        
+    Returns:
+        Response: JSON list of subscribed articles or error message
+        
+    Raises:
+        403: If user is not a reader
+    """
     user = request.user
+    
+    # Verify user has reader role
     if getattr(user, "role", None) != "reader":
         return Response({"detail": "Only readers can use this endpoint."}, status=403)
 
+    # Get subscribed publisher IDs
     pub_ids = Subscription.objects.filter(reader=user).values_list(
         "publisher_id", flat=True
     )
@@ -114,9 +185,7 @@ def api_journalist_articles(request, journalist_id):
     ).order_by("-created_at")
     return Response(ArticleSerializer(articles, many=True, context={"request": request}).data)
 
-# ────────────────────────────────────────────────────────────────
-#  CRUD VIEWSETS
-# ────────────────────────────────────────────────────────────────
+# CRUD VIEWSETS
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset           = Article.objects.all()
     serializer_class   = ArticleSerializer

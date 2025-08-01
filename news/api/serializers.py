@@ -8,7 +8,7 @@ from news.models import (
     Newsletter,      
 )
 
-# ───────────────────────────────────────────────────────────────────
+# Publisher Serializer
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Publisher
@@ -48,9 +48,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             "rejection_reason",
         ]
 
-# ───────────────────────────────────────────────────────────────────
-# NEW  ▸  Newsletter serializer
-# ───────────────────────────────────────────────────────────────────
+# Newsletter serializer
 class NewsletterSerializer(serializers.ModelSerializer):
     journalist = CustomUserSerializer(read_only=True)
     publisher  = PublisherSerializer(read_only=True)

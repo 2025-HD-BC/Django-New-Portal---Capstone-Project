@@ -11,9 +11,9 @@ def debug_password_reset(request):
         <p><strong>This is our custom debug view for password reset.</strong></p>
         <p>If you see this, it means:</p>
         <ul>
-            <li>✅ Our URL routing is working</li>
-            <li>✅ Django is loading our custom view</li>
-            <li>❌ But the template loading might be broken</li>
+            <li>Our URL routing is working</li>
+            <li>Django is loading our custom view</li>
+            <li>But the template loading might be broken</li>
         </ul>
         <hr>
         <p>Next step: Check template loading...</p>
